@@ -157,3 +157,75 @@ resource "aws_autoscaling_group" "demo" {
     propagate_at_launch = true
   }
 }
+
+# Add IAM role for breno node
+resource "aws_iam_role" "breno-node" {
+  name = "terraform-eks-breno-node"
+  assume_role_policy = data.aws_iam_policy_document.node_assume_role_policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "breno-node-policies" {
+  count      = length(local.node_policies)
+  policy_arn = local.node_policies[count.index]
+  role       = aws_iam_role.breno-node.name
+}
+
+resource "aws_iam_instance_profile" "breno-node" {
+  name = "terraform-eks-breno"
+  role = aws_iam_role.breno-node.name
+}
+
+# Add security group for breno node
+resource "aws_security_group" "breno-node" {
+  name        = "terraform-eks-breno-node"
+  description = "Security group for breno nodes in the cluster"
+  vpc_id      = aws_vpc.demo.id
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "terraform-eks-breno-node"
+    "kubernetes.io/cluster/${var.cluster-name}" = "owned"
+  }
+}
+
+# Add launch configuration and autoscaling group for breno
+resource "aws_launch_configuration" "breno" {
+  associate_public_ip_address = true
+  iam_instance_profile        = aws_iam_instance_profile.breno-node.name
+  image_id                    = data.aws_ami.eks-worker.id
+  instance_type               = "m4.large"
+  name_prefix                 = "terraform-eks-breno"
+  security_groups            = [aws_security_group.breno-node.id]
+  user_data_base64           = base64encode(local.demo-node-userdata)
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_autoscaling_group" "breno" {
+  desired_capacity     = 2
+  launch_configuration = aws_launch_configuration.breno.id
+  max_size             = 2
+  min_size             = 1
+  name                 = "terraform-eks-breno"
+  vpc_zone_identifier  = aws_subnet.demo[*].id
+
+  tag {
+    key                 = "Name"
+    value               = "terraform-eks-breno"
+    propagate_at_launch = true
+  }
+
+  tag {
+    key                 = "kubernetes.io/cluster/${var.cluster-name}"
+    value               = "owned"
+    propagate_at_launch = true
+  }
+}
