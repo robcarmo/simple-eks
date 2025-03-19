@@ -4,8 +4,6 @@
 
 locals {
   config-map-aws-auth = <<CONFIGMAPAWSAUTH
-
-
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -14,6 +12,11 @@ metadata:
 data:
   mapRoles: |
     - rolearn: ${aws_iam_role.demo-node.arn}
+      username: system:node:{{EC2PrivateDNSName}}
+      groups:
+        - system:bootstrappers
+        - system:nodes
+    - rolearn: ${aws_iam_role.breno-node.arn}
       username: system:node:{{EC2PrivateDNSName}}
       groups:
         - system:bootstrappers
