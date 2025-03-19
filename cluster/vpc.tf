@@ -15,15 +15,20 @@ resource "aws_vpc" "demo" {
   }
 }
 
+variable "subnet_cidrs" {
+  type    = list(string)
+  default = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+}
+
 resource "aws_subnet" "demo" {
   count = 3
 
-  availability_zone = "${data.aws_availability_zones.available.names[count.index]}"
-  cidr_block        = "10.0.${count.index}.0/24"
-  vpc_id            = "${aws_vpc.demo.id}"
+  availability_zone = data.aws_availability_zones.available.names[count.index]
+  cidr_block        = var.subnet_cidrs[count.index]
+  vpc_id            = aws_vpc.demo.id
 
   tags = {
-    Name = "terraform-eks-demo-node"
+    "Name" = "terraform-eks-demo-node"
     "kubernetes.io/cluster/${var.cluster-name}" = "shared"
   }
 }
