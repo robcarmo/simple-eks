@@ -58,12 +58,10 @@ resource "aws_security_group" "demo-node" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = "${
-    map(
-     "Name", "terraform-eks-demo-node",
-     "kubernetes.io/cluster/${var.cluster-name}", "owned",
-    )
-  }"
+  tags = {
+    Name = "terraform-eks-demo-node"
+    "kubernetes.io/cluster/${var.cluster-name}" = "owned"
+  }
 }
 
 resource "aws_security_group_rule" "demo-node-ingress-self" {
