@@ -4,7 +4,7 @@
 
 provider "aws" {
   region = "us-west-2"
-  version = "~> 1.24"
+ # version = "~> 5.0"
 }
 
 # Using these data sources allows the configuration to be
@@ -18,5 +18,5 @@ data "aws_availability_zones" "available" {}
 # to open EC2 Security Group access to the Kubernetes cluster.
 # See workstation-external-ip.tf for additional information.
 provider "http" {
-  version = "~> 1.0"
+  #version = "~> 2.0"
 }
