@@ -87,11 +87,10 @@ resource "aws_security_group_rule" "demo-node-ingress-cluster" {
 data "aws_ami" "eks-worker" {
   filter {
     name   = "name"
-    values = ["eks-worker-*"]
+    values = ["amazon-eks-node-${aws_eks_cluster.demo.version}-v*"]
   }
-
   most_recent = true
-  owners      = ["602401143452"] # Amazon
+  owners      = ["602401143452"] # Amazon EKS AMI Account ID
 }
 
 # EKS currently documents this required userdata for EKS worker nodes to
