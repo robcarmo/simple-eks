@@ -1,87 +1,20032 @@
-#
-# EKS Cluster Resources
-#  * IAM Role to allow EKS service to manage other AWS services
-#  * EC2 Security Group to allow networking traffic with EKS cluster
-#  * EKS Cluster
-#
-
-resource "aws_iam_role" "demo-cluster" {
-  name = "terraform-eks-demo-cluster"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "eks.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-POLICY
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
 }
 
-resource "aws_iam_role_policy_attachment" "demo-cluster-AmazonEKSClusterPolicy" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
-  role       = "${aws_iam_role.demo-cluster.name}"
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}#resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
 }
 
-resource "aws_iam_role_policy_attachment" "demo-cluster-AmazonEKSServicePolicy" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSServicePolicy"
-  role       = "${aws_iam_role.demo-cluster.name}"
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
 }
 
-resource "aws_security_group" "demo-cluster" {
-  name        = "terraform-eks-demo-cluster"
-  description = "Cluster communication with worker nodes"
-  vpc_id      = "${aws_vpc.demo.id}"
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "terraform-eks-demo"
-  }
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}#resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
 }
 
-resource "aws_security_group_rule" "demo-cluster-ingress-node-https" {
-  description              = "Allow pods to communicate with the cluster API Server"
-  from_port                = 443
-  protocol                 = "tcp"
-  security_group_id        = "${aws_security_group.demo-cluster.id}"
-  source_security_group_id = "${aws_security_group.demo-node.id}"
-  to_port                  = 443
-  type                     = "ingress"
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
 }
 
-resource "aws_security_group_rule" "demo-cluster-ingress-workstation-https" {
-  cidr_blocks       = ["${local.workstation-external-cidr}"]
-  description       = "Allow workstation to communicate with the cluster API Server"
-  from_port         = 443
-  protocol          = "tcp"
-  security_group_id = "${aws_security_group.demo-cluster.id}"
-  to_port           = 443
-  type              = "ingress"
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
 }
 
-resource "aws_eks_cluster" "demo" {
-  name     = "${var.cluster-name}"
-  role_arn = "${aws_iam_role.demo-cluster.arn}"
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Kresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
 
-  vpc_config {
-    security_group_ids = [aws_security_group.demo-cluster.id]
-    subnet_ids         = aws_subnet.demo[*].id
-  }
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
 
-  depends_on = [
-    aws_iam_role_policy_attachment.demo-cluster-AmazonEKSClusterPolicy,
-    aws_iam_role_policy_attachment.demo-cluster-AmazonEKSServicePolicy,
-  ]
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}#resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}*resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Kresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}vresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}gresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}hresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}vresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}#resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}*resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}2resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}yresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Gresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}kresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}gresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}fresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}fresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}hresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Kresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}#resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}*resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Kresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}#resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}{resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}fresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}kresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}yresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}<resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}<resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Yresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}{resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Vresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}:resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}2resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}0resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}1resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}2resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}1resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}0resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}1resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}7resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+},resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}:resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}[resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}{resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}fresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}fresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}:resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+},resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}:resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}{resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}vresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}:resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}kresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}.resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}zresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}.resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}}resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+},resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}:resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}:resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}}resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}]resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}}resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Yresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}}resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}yresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}hresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}zresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Kresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}yresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}{resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}yresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}:resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}:resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}:resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}:resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}:resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}yresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}/resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}zresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Kresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}yresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}$resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}{resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}.resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}.resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}}resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}}resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}yresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}hresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}zresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Kresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}vresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}yresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}{resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}yresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}:resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}:resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}:resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}:resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}:resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}yresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}/resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}zresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Kresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}vresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}yresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}$resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}{resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}.resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}.resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}}resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}}resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}yresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}gresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}{resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}fresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}kresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}hresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}kresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}vresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}$resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}{resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}vresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}.resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}.resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}}resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}gresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}{resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}fresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}0resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}0resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}1resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}bresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}kresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}[resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}0resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}.resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}0resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}.resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}0resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}.resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}0resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}/resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}0resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}]resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}}resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}gresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}{resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}fresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}kresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}}resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}}resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}yresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}gresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}gresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}hresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}{resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}hresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}hresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}vresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}fresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}4resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}4resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}3resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}yresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}gresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}$resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}{resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}yresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}gresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}.resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}.resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}}resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}yresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}gresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}$resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}{resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}yresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}gresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}.resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}.resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}}resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}4resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}4resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}3resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}yresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}gresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}}resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}yresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}gresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}gresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}kresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}hresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}{resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}bresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}kresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}[resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}$resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}{resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}.resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}kresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}xresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}}resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}]resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}kresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}hresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}hresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}vresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}fresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}4resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}4resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}3resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}yresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}gresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}$resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}{resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}yresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}gresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}.resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}.resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}}resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}4resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}4resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}3resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}yresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}gresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}}resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}kresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}{resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}$resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}{resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}vresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}.resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}}resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}$resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}{resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}.resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}.resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}}resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}"resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}vresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}fresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}gresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}{resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}yresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}gresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}[resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}yresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}gresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}.resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}.resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}]resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}bresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}bresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}.resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}[resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}*resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}]resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}.resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}}resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}=resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}[resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}yresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}hresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}.resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}zresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Kresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}yresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+},resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}wresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}yresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}_resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}hresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}.resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}dresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}uresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}tresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}-resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}mresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}aresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}zresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}nresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Kresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Sresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}rresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}vresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}eresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}Presource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}oresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}lresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}iresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}cresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}yresource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+},resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+} resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}]resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}}resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+resource "aws_iam_openid_connect_provider" "eks" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
+}
+
+data "tls_certificate" "eks" {
+  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
 }
