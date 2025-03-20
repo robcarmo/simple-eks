@@ -24,13 +24,11 @@ data:
 CONFIGMAPAWSAUTH
 
   kubeconfig = <<KUBECONFIG
-
-
 apiVersion: v1
 clusters:
 - cluster:
     server: ${aws_eks_cluster.demo.endpoint}
-    certificate-authority-data: ${aws_eks_cluster.demo.certificate_authority.0.data}
+    certificate-authority-data: ${aws_eks_cluster.demo.certificate_authority[0].data}
   name: kubernetes
 contexts:
 - context:
@@ -44,19 +42,26 @@ users:
 - name: aws
   user:
     exec:
-      apiVersion: client.authentication.k8s.io/v1alpha1
-      command: heptio-authenticator-aws
+      apiVersion: client.authentication.k8s.io/v1beta1
+      command: aws
       args:
-        - "token"
-        - "-i"
+        - "eks"
+        - "get-token"
+        - "--cluster-name"
         - "${var.cluster-name}"
 KUBECONFIG
 }
 
-output "config-map-aws-auth" {
-  value = "${local.config-map-aws-auth}"
+output "kubeconfig" {
+  value = local.kubeconfig
 }
 
-output "kubeconfig" {
-  value = "${local.kubeconfig}"
+output "oidc_provider_arn" {
+  value       = aws_iam_openid_connect_provider.eks.arn
+  description = "ARN of the OIDC Provider for EKS"
+}
+
+output "service_account_role_arn" {
+  value       = aws_iam_role.eks_service_account_role.arn
+  description = "ARN of the IAM role for Kubernetes service accounts"
 }
