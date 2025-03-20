@@ -19,39 +19,9 @@ resource "aws_iam_role" "demo-cluster" {
       },
       "Action": "sts:AssumeRole"
     }
-
-resource "aws_iam_openid_connect_provider" "eks" {
-  client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
-  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
-}
-
-data "tls_certificate" "eks" {
-  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
-}
   ]
 }
-
-resource "aws_iam_openid_connect_provider" "eks" {
-  client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
-  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
-}
-
-data "tls_certificate" "eks" {
-  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
-}
 POLICY
-}
-
-resource "aws_iam_openid_connect_provider" "eks" {
-  client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
-  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
-}
-
-data "tls_certificate" "eks" {
-  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
 }
 
 resource "aws_iam_role_policy_attachment" "demo-cluster-AmazonEKSClusterPolicy" {
@@ -59,29 +29,9 @@ resource "aws_iam_role_policy_attachment" "demo-cluster-AmazonEKSClusterPolicy" 
   role       = "${aws_iam_role.demo-cluster.name}"
 }
 
-resource "aws_iam_openid_connect_provider" "eks" {
-  client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
-  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
-}
-
-data "tls_certificate" "eks" {
-  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
-}
-
 resource "aws_iam_role_policy_attachment" "demo-cluster-AmazonEKSServicePolicy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSServicePolicy"
   role       = "${aws_iam_role.demo-cluster.name}"
-}
-
-resource "aws_iam_openid_connect_provider" "eks" {
-  client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
-  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
-}
-
-data "tls_certificate" "eks" {
-  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
 }
 
 resource "aws_security_group" "demo-cluster" {
@@ -96,39 +46,9 @@ resource "aws_security_group" "demo-cluster" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-resource "aws_iam_openid_connect_provider" "eks" {
-  client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
-  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
-}
-
-data "tls_certificate" "eks" {
-  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
-}
-
   tags = {
     Name = "terraform-eks-demo"
   }
-
-resource "aws_iam_openid_connect_provider" "eks" {
-  client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
-  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
-}
-
-data "tls_certificate" "eks" {
-  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
-}
-}
-
-resource "aws_iam_openid_connect_provider" "eks" {
-  client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
-  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
-}
-
-data "tls_certificate" "eks" {
-  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
 }
 
 resource "aws_security_group_rule" "demo-cluster-ingress-node-https" {
@@ -141,16 +61,6 @@ resource "aws_security_group_rule" "demo-cluster-ingress-node-https" {
   type                     = "ingress"
 }
 
-resource "aws_iam_openid_connect_provider" "eks" {
-  client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
-  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
-}
-
-data "tls_certificate" "eks" {
-  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
-}
-
 resource "aws_security_group_rule" "demo-cluster-ingress-workstation-https" {
   cidr_blocks       = ["${local.workstation-external-cidr}"]
   description       = "Allow workstation to communicate with the cluster API Server"
@@ -159,16 +69,6 @@ resource "aws_security_group_rule" "demo-cluster-ingress-workstation-https" {
   security_group_id = "${aws_security_group.demo-cluster.id}"
   to_port           = 443
   type              = "ingress"
-}
-
-resource "aws_iam_openid_connect_provider" "eks" {
-  client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
-  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
-}
-
-data "tls_certificate" "eks" {
-  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
 }
 
 resource "aws_eks_cluster" "demo" {
@@ -180,28 +80,8 @@ resource "aws_eks_cluster" "demo" {
     subnet_ids         = aws_subnet.demo[*].id
   }
 
-resource "aws_iam_openid_connect_provider" "eks" {
-  client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
-  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
-}
-
-data "tls_certificate" "eks" {
-  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
-}
-
   depends_on = [
     aws_iam_role_policy_attachment.demo-cluster-AmazonEKSClusterPolicy,
     aws_iam_role_policy_attachment.demo-cluster-AmazonEKSServicePolicy,
   ]
-}
-
-resource "aws_iam_openid_connect_provider" "eks" {
-  client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
-  url             = aws_eks_cluster.demo.identity[0].oidc[0].issuer
-}
-
-data "tls_certificate" "eks" {
-  url = aws_eks_cluster.demo.identity[0].oidc[0].issuer
 }
