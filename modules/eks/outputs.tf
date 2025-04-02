@@ -20,10 +20,10 @@ output "worker_security_group_id" {
 
 output "vpc_id" {
   description = "ID of the VPC"
-  value       = aws_vpc.demo.id
+  value       = var.vpc_id
 }
 
 output "subnet_ids" {
   description = "List of subnet IDs"
-  value       = aws_subnet.demo[*].id
+  value       = var.subnet_ids
 }
