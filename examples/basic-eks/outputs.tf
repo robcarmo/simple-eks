@@ -12,13 +12,3 @@ output "cluster_certificate_authority" {
   description = "Base64 encoded certificate data required to communicate with cluster"
   value       = module.eks.cluster_certificate_authority
 }
-
-output "vpc_id" {
-  description = "VPC ID"
-  value       = module.eks.vpc_id
-}
-
-output "subnet_ids" {
-  description = "Subnet IDs"
-  value       = module.eks.subnet_ids
-}
