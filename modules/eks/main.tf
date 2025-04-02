@@ -129,7 +129,7 @@ resource "aws_launch_template" "node" {
   image_id      = data.aws_ami.eks-worker.id
 
   user_data = base64encode(templatefile("${path.module}/templates/userdata.sh", {
-    cluster_name = aws_eks_cluster.demo.name
+    CLUSTER_NAME = aws_eks_cluster.demo.name
   }))
 
   tag_specifications {
