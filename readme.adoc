@@ -1,14 +1,36 @@
-ifdef::env-github[]
-:tip-caption: :bulb:
-:note-caption: :information_source:
-:important-caption: :heavy_exclamation_mark:
-:caution-caption: :fire:
-:warning-caption: :warning:
-endif::[]
+= Simple EKS Terraform Module
 
-= Terraform EKS Module
+== Repository Structure
+* examples/
+** basic-eks/ - Basic EKS cluster example
+* modules/
+** eks/ - EKS cluster and node group configuration
+** vpc/ - VPC networking configuration
 
-This repository contains a Terraform module for deploying Amazon EKS clusters with associated networking and security resources.
+== Module Usage
+[source,hcl]
+----
+module "eks" {
+  source = "../../modules/eks"
+  
+  cluster_name = "demo-cluster"
+  subnet_ids   = module.vpc.public_subnet_ids
+}
+----
+
+== Requirements
+* Terraform >= 0.12
+* AWS Provider >= 3.0
+
+== Troubleshooting
+* Ensure AWS credentials are properly configured
+* Check subnet configuration matches VPC module outputs
+* Verify IAM roles have proper permissions
+
+== Best Practices
+* Use private subnets for worker nodes
+* Enable control plane logging
+* Implement proper security groups
 
 == Prerequisites
 
