@@ -14,20 +14,23 @@ provider "kubernetes" {
 
 module "vpc" {
   source = "../../modules/vpc"
-  
-  name_prefix      = var.cluster-name
-  cluster_name_tag = var.cluster-name
+
+  name_prefix = var.cluster-name
+  vpc_cidr    = var.vpc_cidr
+  tags = {
+    "kubernetes.io/cluster/${var.cluster-name}" = "shared"
+  }
 }
 
 module "eks" {
   source = "../../modules/eks"
-  
+
+  cluster-name       = var.cluster-name
+  kubernetes_version = var.kubernetes_version
   vpc_id            = module.vpc.vpc_id
   subnet_ids        = module.vpc.public_subnet_ids
-  cluster-name      = var.cluster-name
-  kubernetes_version = var.kubernetes_version
   node_instance_type = var.node_instance_type
-  node_desired_size  = var.node_desired_size
-  node_max_size      = var.node_max_size
-  node_min_size      = var.node_min_size
+  node_desired_size = var.node_desired_size
+  node_max_size     = var.node_max_size
+  node_min_size     = var.node_min_size
 }
