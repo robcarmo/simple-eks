@@ -12,12 +12,20 @@ provider "kubernetes" {
   }
 }
 
-module "eks" {
-  source = "../../modules/eks"
+module "vpc" {
+  source      = "../../modules/vpc"
+  name_prefix = var.cluster_name
+  vpc_cidr    = "10.0.0.0/16"
+  num_azs     = 2
+  tags        = var.tags
+}
 
+module "eks" {
+  source      = "../../modules/eks"
+  vpc_id      = module.vpc.vpc_id
+  subnet_ids  = module.vpc.public_subnet_ids
   cluster-name        = var.cluster-name
   kubernetes_version  = var.kubernetes_version
-  vpc_cidr           = var.vpc_cidr
   node_instance_type = var.node_instance_type
   node_desired_size  = var.node_desired_size
   node_max_size      = var.node_max_size

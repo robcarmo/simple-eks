@@ -15,15 +15,14 @@ variable "kubernetes_version" {
   }
 }
 
-variable "vpc_cidr" {
-  description = "CIDR block for VPC"
+variable "vpc_id" {
   type        = string
-  default     = "10.0.0.0/16"
-  
-  validation {
-    condition     = can(cidrhost(var.vpc_cidr, 0))
-    error_message = "Must be valid IPv4 CIDR."
-  }
+  description = "ID of VPC where EKS cluster will be created"
+}
+
+variable "subnet_ids" {
+  type        = list(string)
+  description = "List of subnet IDs for EKS cluster"
 }
 
 variable "node_instance_type" {
