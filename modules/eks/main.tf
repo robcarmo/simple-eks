@@ -1,4 +1,15 @@
 
+# Attach policies to the cluster IAM role
+resource "aws_iam_role_policy_attachment" "cluster-AmazonEKSClusterPolicy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+  role       = aws_iam_role.cluster.name
+}
+
+resource "aws_iam_role_policy_attachment" "cluster-AmazonEKSServicePolicy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSServicePolicy"
+  role       = aws_iam_role.cluster.name
+}
+
 
 # Security Groups
 resource "aws_security_group" "cluster" {
@@ -120,16 +131,16 @@ resource "aws_security_group_rule" "node_to_node" {
 resource "aws_eks_cluster" "demo" {
   name     = var.cluster-name
   version  = var.kubernetes_version
-  role_arn = aws_iam_role.cluster.arn
+  role_arn = aws_iam_role.cluster.arn  # Correct reference to the new cluster role
 
   vpc_config {
     security_group_ids = [aws_security_group.cluster.id]
-    subnet_ids         = var.subnet_ids
+    subnet_ids         = aws_subnet.demo[*].id
   }
 
   depends_on = [
-    aws_iam_role_policy_attachment.cluster-AmazonEKSClusterPolicy,
-    aws_iam_role_policy_attachment.cluster-AmazonEKSServicePolicy,
+    aws_iam_role_policy_attachment.cluster-AmazonEKSClusterPolicy,  # Now exists
+    aws_iam_role_policy_attachment.cluster-AmazonEKSServicePolicy,  # Now exists
   ]
 }
 
@@ -208,5 +219,3 @@ resource "aws_launch_template" "node" {
     create_before_destroy = true
   }
 }
-
-# ... Rest of the resources
