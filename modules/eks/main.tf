@@ -93,6 +93,90 @@ resource "aws_security_group_rule" "node-ingress-cluster" {
   type                    = "ingress"
 }
 
+# Add this data source before the aws_launch_template.node resource
+data "aws_ami" "eks-worker" {
+  filter {
+    name   = "name"
+    values = ["amazon-eks-node-${var.kubernetes_version}-v*"]
+  }
+  most_recent = true
+  owners      = ["amazon"]
+}
+
+# Add these IAM resources for worker nodes
+resource "aws_iam_role" "node" {
+  name = "${var.cluster-name}-node-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Action = "sts:AssumeRole",
+      Effect = "Allow", 
+      Principal = {
+        Service = "ec2.amazonaws.com"
+      }
+    }]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "node-AmazonEKSWorkerNodePolicy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+  role       = aws_iam_role.node.name
+}
+
+resource "aws_iam_role_policy_attachment" "node-AmazonEC2ContainerRegistryReadOnly" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+  role       = aws_iam_role.node.name
+}
+
+resource "aws_iam_role_policy_attachment" "node-AmazonEKS_CNI_Policy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+  role       = aws_iam_role.node.name
+}
+
+resource "aws_iam_instance_profile" "node" {
+  name = "${var.cluster-name}-node-profile"
+  role = aws_iam_role.node.name
+}
+
+# Add Auto Scaling Group for worker nodes
+resource "aws_autoscaling_group" "node" {
+  name                = "${var.cluster-name}-asg"
+  launch_template {
+    id      = aws_launch_template.node.id
+    version = "$Latest"
+  }
+  min_size            = var.node_min_size
+  max_size            = var.node_max_size
+  desired_capacity    = var.node_desired_size
+  vpc_zone_identifier = var.subnet_ids
+
+  tag {
+    key                 = "kubernetes.io/cluster/${var.cluster-name}"
+    value               = "owned"
+    propagate_at_launch = true
+  }
+}
+
+# Add security group rules
+resource "aws_security_group_rule" "cluster_to_node" {
+  type                     = "ingress"
+  from_port               = 10250
+  to_port                 = 10250
+  protocol                = "tcp"
+  security_group_id       = aws_security_group.cluster.id
+  source_security_group_id = aws_security_group.node.id
+}
+
+resource "aws_security_group_rule" "node_to_node" {
+  type                     = "ingress"
+  from_port               = 0
+  to_port                 = 65535
+  protocol                = "-1"
+  security_group_id       = aws_security_group.node.id
+  source_security_group_id = aws_security_group.node.id
+}
+
 # EKS Cluster
 resource "aws_eks_cluster" "demo" {
   name     = var.cluster-name
