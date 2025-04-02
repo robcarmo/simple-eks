@@ -103,7 +103,7 @@ resource "aws_eks_cluster" "demo" {
 
   vpc_config {
     security_group_ids = [aws_security_group.cluster.id]
-    subnet_ids         = aws_subnet.demo[*].id
+    subnet_ids         = var.subnet_ids
   }
 
   depends_on = [
