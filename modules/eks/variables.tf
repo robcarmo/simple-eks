@@ -16,12 +16,12 @@ variable "kubernetes_version" {
 }
 
 variable "vpc_id" {
-  description = "ID of the VPC where EKS cluster will be created"
+  description = "The ID of the VPC where the cluster will be deployed"
   type        = string
 }
 
 variable "subnet_ids" {
-  description = "List of subnet IDs for EKS cluster"
+  description = "List of subnet IDs where the cluster will be deployed"
   type        = list(string)
 }
 
