@@ -1,50 +1,31 @@
 variable "cluster-name" {
-  description = "Name of the EKS cluster"
-  type        = string
-  default     = "terraform-eks"
+  type = string
 }
 
 variable "kubernetes_version" {
-  description = "Kubernetes version to use for the EKS cluster"
-  type        = string
-  default     = "1.27"
-  
-  validation {
-    condition     = can(regex("^1\\.(2[3-7]|[3-9][0-9])$", var.kubernetes_version))
-    error_message = "Kubernetes version must be 1.23 or higher."
-  }
+  type = string
 }
 
 variable "vpc_id" {
-  description = "The ID of the VPC where the cluster will be deployed"
-  type        = string
+  type = string
 }
 
 variable "subnet_ids" {
-  description = "List of subnet IDs where the cluster will be deployed"
-  type        = list(string)
+  type = list(string)
 }
 
 variable "node_instance_type" {
-  description = "EC2 instance type for worker nodes"
-  type        = string
-  default     = "t3.medium"
+  type = string
 }
 
 variable "node_desired_size" {
-  description = "Desired number of worker nodes"
-  type        = number
-  default     = 2
+  type = number
 }
 
 variable "node_max_size" {
-  description = "Maximum number of worker nodes"
-  type        = number
-  default     = 4
+  type = number
 }
 
 variable "node_min_size" {
-  description = "Minimum number of worker nodes"
-  type        = number
-  default     = 1
+  type = number
 }

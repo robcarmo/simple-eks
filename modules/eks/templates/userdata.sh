@@ -1,5 +1,2 @@
 #!/bin/bash
-set -e
-
-# Configure kubelet
-/etc/eks/bootstrap.sh ${cluster_name}
+/etc/eks/bootstrap.sh ${cluster_name} --kubelet-extra-args "--node-labels=node-type=worker"
