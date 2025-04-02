@@ -194,14 +194,69 @@ resource "aws_eks_cluster" "demo" {
   ]
 }
 
-# Worker Nodes
+# Add AMI data source
+data "aws_ami" "eks-worker" {
+  filter {
+    name   = "name"
+    values = ["amazon-eks-node-${var.kubernetes_version}-v*"]
+  }
+  most_recent = true
+  owners      = ["amazon"]
+}
+
+# Add IAM role for worker nodes
+resource "aws_iam_role" "node" {
+  name = "${var.cluster-name}-node-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
+      Principal = {
+        Service = "ec2.amazonaws.com"
+      }
+    }]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "node-AmazonEKSWorkerNodePolicy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+  role       = aws_iam_role.node.name
+}
+
+resource "aws_iam_role_policy_attachment" "node-AmazonEC2ContainerRegistryReadOnly" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+  role       = aws_iam_role.node.name
+}
+
+resource "aws_iam_role_policy_attachment" "node-AmazonEKS_CNI_Policy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+  role       = aws_iam_role.node.name
+}
+
+resource "aws_iam_instance_profile" "node" {
+  name = "${var.cluster-name}-node-profile"
+  role = aws_iam_role.node.name
+}
+
+# Update launch template
 resource "aws_launch_template" "node" {
-  name_prefix = "${var.cluster-name}-node"
+  name_prefix = "${var.cluster-name}-node-"
   
   instance_type = var.node_instance_type
   image_id      = data.aws_ami.eks-worker.id
 
-  vpc_security_group_ids = [aws_security_group.node.id]
+  network_interfaces {
+    associate_public_ip_address = true
+    security_groups            = [aws_security_group.node.id]
+    delete_on_termination      = true
+  }
+
+  iam_instance_profile {
+    arn = aws_iam_instance_profile.node.arn
+  }
+
   user_data = base64encode(templatefile("${path.module}/templates/userdata.sh", {
     cluster_name = aws_eks_cluster.demo.name
   }))
