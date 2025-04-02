@@ -27,7 +27,6 @@ resource "aws_subnet" "public" {
     {
       "Name" = "${var.name_prefix}-public-subnet-${data.aws_availability_zones.available.names[count.index]}"
       "kubernetes.io/role/elb" = "1"
-      "kubernetes.io/cluster/${var.cluster_name_tag}" = "shared"
     },
     var.tags
   )

@@ -3,11 +3,6 @@ variable "name_prefix" {
   type        = string
 }
 
-variable "cluster_name_tag" {
-  description = "The EKS cluster name, used for tagging subnets"
-  type        = string
-}
-
 variable "vpc_cidr" {
   description = "The CIDR block for the VPC"
   type        = string
@@ -15,13 +10,13 @@ variable "vpc_cidr" {
 }
 
 variable "num_azs" {
-  description = "Number of Availability Zones to create subnets in"
+  description = "Number of Availability Zones to use"
   type        = number
   default     = 3
 }
 
 variable "tags" {
-  description = "A map of additional tags to apply to all resources"
+  description = "Additional tags for all resources"
   type        = map(string)
   default     = {}
 }
