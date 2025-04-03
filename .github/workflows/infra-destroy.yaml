@@ -56,8 +56,8 @@ jobs:
           cd infra
           terraform apply -auto-approve tfplan
 
-      - name: Terraform Destroy
-        if: ${{ github.event.inputs.action == 'destroy' }}
-        run: |
-          cd infra
-          terraform destroy -auto-approve
+      # - name: Terraform Destroy
+      #   if: ${{ github.event.inputs.action == 'destroy' }}
+      #   run: |
+      #     cd infra
+      #     terraform destroy -auto-approve
