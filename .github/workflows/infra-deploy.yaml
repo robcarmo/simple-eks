@@ -28,7 +28,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4 # Updated to v4
         with:
           # Role ARN that the GitHub Actions runner will assume
-          role-to-assume: ${{ secrets.GITHUB_AWS_ROLE_TO_ASSUME }} # Use the secret for the role the WORKFLOW assumes
+          role-to-assume: ${{ secrets.GITHUBAWS }} # Use the secret for the role the WORKFLOW assumes
           aws-region: us-east-1 # Use the region secret
 
       - name: Setup Terraform
