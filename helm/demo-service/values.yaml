@@ -1,0 +1,18 @@
+namespace:
+  name: demo-service
+
+deployment:
+  name: demo-service-nginx
+  replicaCount: 1
+  image:
+    repository: nginx
+    tag: latest
+    pullPolicy: IfNotPresent
+  labels:
+    app: nginx
+
+service:
+  name: demo-service-nginx-svc
+  type: LoadBalancer
+  port: 8080
+  targetPort: 80
