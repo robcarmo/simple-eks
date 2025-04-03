@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - master
-    paths:
-      - 'infra/**'
   workflow_dispatch:
     inputs:
       action:
