@@ -41,7 +41,7 @@ jobs:
       # Terraform Init no longer needs cd infra due to job defaults
       - name: Terraform Init
         id: init
-        run: terraform init -input=false -backend-config="bucket=${{ secrets.TF_STATE_BUCKET }}" -backend-config="key=infra/terraform.tfstate" -backend-config="region=us-east-1"
+        run: terraform init -input=false -reconfigure -backend-config="bucket=${{ secrets.TF_STATE_BUCKET }}" -backend-config="key=infra/terraform.tfstate" -backend-config="region=us-east-1"
         env:
           # Pass AWS credentials if needed for init, though OIDC should handle it
           AWS_REGION: us-east-1
