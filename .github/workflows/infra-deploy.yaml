@@ -3,7 +3,7 @@ name: Deploy Infrastructure to AWS
 on:
   push:
     branches:
-      - main
+      - master
     paths:
       - 'infra/**'
   workflow_dispatch:  # Allows manual triggering

@@ -3,7 +3,7 @@ name: Build and Push App Container to ECR with OIDC
 on:
   push:
     branches:
-      - main
+      - master
     paths:
       - 'app/**'
       - 'app/Dockerfile'

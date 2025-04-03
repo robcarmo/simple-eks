@@ -4,7 +4,7 @@ on:
   # Trigger independently on pushes affecting app/ or helm/ directories
   push:
     branches:
-      - main
+      - master
     paths:
       - 'app/**'
       - 'helm/**'
