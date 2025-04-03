@@ -133,6 +133,20 @@ LoadBalancer service configuration
 AWS IAM authentication integration
 Last updated: October 2023 (Terraform 1.5+, AWS Provider 5.0+)
 
+## Deploying with Helm
+
+To deploy the nginx service using Helm:
+
+1. Configure kubectl to use the EKS cluster:
+```bash
+aws eks update-kubeconfig --region us-east-1 --name cc-eks
+```
+
+2. Install the Helm chart:
+```bash
+helm install my-release ./helm --namespace demo-service --create-namespace
+```
+
 
 This README:
 1. Accurately reflects current module structures and relationships
