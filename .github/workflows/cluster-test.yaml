@@ -61,6 +61,7 @@ jobs:
           else
             echo "Error: Expected 1 available replica for deployment 'demo-service', found $AVAILABLE_REPLICAS"
             echo "--- Deployment Status ---"
+            kubectl get all -A
             kubectl get deployment demo-service -o wide || true
             echo "--- Deployment YAML ---"
             kubectl get deployment demo-service -o yaml || true
