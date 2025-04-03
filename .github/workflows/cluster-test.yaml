@@ -50,27 +50,27 @@ jobs:
             --region ${{ github.event.inputs.location }}
 
       # --- Deployment Verification ---
-      - name: Verify Deployment 'hello-world'
+      - name: Verify Deployment 'demo-service'
         run: |
-          echo "Verifying deployment 'hello-world' has 1 available replica..."
+          echo "Verifying deployment 'demo-service' has 1 available replica..."
           sleep 5  # Short wait for context to be ready
-          AVAILABLE_REPLICAS=$(kubectl get deployment hello-world -o jsonpath='{.status.availableReplicas}' 2>/dev/null || echo "0")
+          AVAILABLE_REPLICAS=$(kubectl get deployment demo-service -o jsonpath='{.status.availableReplicas}' 2>/dev/null || echo "0")
 
           if [[ "$AVAILABLE_REPLICAS" -eq 1 ]]; then
             echo "Deployment verification successful."
           else
-            echo "Error: Expected 1 available replica for deployment 'hello-world', found $AVAILABLE_REPLICAS"
+            echo "Error: Expected 1 available replica for deployment 'demo-service', found $AVAILABLE_REPLICAS"
             echo "--- Deployment Status ---"
-            kubectl get deployment hello-world -o wide || true
+            kubectl get deployment demo-service -o wide || true
             echo "--- Deployment YAML ---"
-            kubectl get deployment hello-world -o yaml || true
+            kubectl get deployment demo-service -o yaml || true
             echo "--- Pods Status ---"
-            kubectl get pods -l app=hello-world || true
+            kubectl get pods -l app=demo-service || true
             exit 1
           fi
 
       # --- End-to-End Test ---
-      - name: End-to-End Test Service 'hello-world'
+      - name: End-to-End Test Service 'demo-service'
         run: |
           TIMEOUT_SECONDS="${{ github.event.inputs.timeout }}"
           WAIT_INTERVAL=10
@@ -82,12 +82,12 @@ jobs:
           fi
 
           MAX_WAIT_ITERATIONS=$(( TIMEOUT_SECONDS / WAIT_INTERVAL ))
-          echo "Attempting to get External IP for service 'hello-world' (max wait: ${TIMEOUT_SECONDS}s)..."
+          echo "Attempting to get External IP for service 'demo-service' (max wait: ${TIMEOUT_SECONDS}s)..."
 
           EXTERNAL_IP=""
           for (( i=1; i<=MAX_WAIT_ITERATIONS; i++ )); do
             # Attempt retrieving an external IP field from the service
-            IP_JSON=$(kubectl get service hello-world -o jsonpath='{.status.loadBalancer.ingress[0].ip}' 2>/dev/null || true)
+            IP_JSON=$(kubectl get service demo-service -o jsonpath='{.status.loadBalancer.ingress[0].ip}' 2>/dev/null || true)
             if [[ -n "$IP_JSON" && "$IP_JSON" != "null" && "$IP_JSON" != "<none>" ]]; then
               EXTERNAL_IP="$IP_JSON"
               echo "Found External IP: $EXTERNAL_IP"
@@ -95,11 +95,11 @@ jobs:
             fi
 
             if [[ $i -eq $MAX_WAIT_ITERATIONS ]]; then
-               echo "Error: Timed out waiting for External IP for service 'hello-world' after ~${TIMEOUT_SECONDS} seconds."
+               echo "Error: Timed out waiting for External IP for service 'demo-service' after ~${TIMEOUT_SECONDS} seconds."
                echo "--- Service Status ---"
-               kubectl get service hello-world -o wide || true
+               kubectl get service demo-service -o wide || true
                echo "--- Service YAML ---"
-               kubectl get service hello-world -o yaml || true
+               kubectl get service demo-service -o yaml || true
                exit 1
             fi
 
