@@ -1,7 +1,7 @@
 variable "cluster-name" {
   description = "Name of the EKS cluster"
   type        = string
-  default     = "terraform-eks"
+  default     = "cc-eks"
 }
 
 variable "kubernetes_version" {

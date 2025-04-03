@@ -15,7 +15,7 @@ provider "kubernetes" {
 module "vpc" {
   source          = "./modules/vpc"
   vpc_cidr        = var.vpc_cidr
-  name_prefix     = "${var.cluster-name}-"
+  name_prefix     = "${var.cluster-name}"
 }
 
 module "eks" {
@@ -28,4 +28,14 @@ module "eks" {
   node_desired_size = var.node_desired_size
   node_max_size = var.node_max_size
   node_min_size = var.node_min_size
+}
+
+module "ecr" {
+  source = "./modules/ecr"
+
+  repository_name = "demo-service"
+  tags = {
+    Environment = "dev"
+    Project     = "simple-eks"
+  }
 }
