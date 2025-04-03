@@ -1,0 +1,140 @@
+name: Manual EKS Cluster Verification
+
+on:
+  # Allows manually triggering this workflow.
+  workflow_dispatch:
+    inputs:
+      cluster_name:
+        description: 'EKS Cluster Name'
+        required: true
+        default: 'my-eks-cluster'
+        type: string
+      location:
+        description: 'AWS Region'
+        required: true
+        default: 'us-east-1'
+        type: string
+      timeout:
+        description: 'Test Timeout (seconds)'
+        required: true
+        default: '300'
+        type: string
+
+permissions:
+  contents: read
+  id-token: write  # Required for OIDC-based authentication.
+
+jobs:
+  cluster-verification:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validate Inputs
+        run: |
+          echo "Testing cluster: ${{ github.event.inputs.cluster_name }}"
+          echo "Region: ${{ github.event.inputs.location }}"
+          echo "Timeout: ${{ github.event.inputs.timeout }} seconds"
+
+      # Authenticate to AWS using OIDC
+      - name: Configure AWS Credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.githubaws }}
+          aws-region: ${{ github.event.inputs.location }}
+
+      # Update kubeconfig to point to EKS
+      - name: Configure EKS Access
+        run: |
+          aws eks update-kubeconfig \
+            --name ${{ github.event.inputs.cluster_name }} \
+            --region ${{ github.event.inputs.location }}
+
+      # --- Deployment Verification ---
+      - name: Verify Deployment 'hello-world'
+        run: |
+          echo "Verifying deployment 'hello-world' has 1 available replica..."
+          sleep 5  # Short wait for context to be ready
+          AVAILABLE_REPLICAS=$(kubectl get deployment hello-world -o jsonpath='{.status.availableReplicas}' 2>/dev/null || echo "0")
+
+          if [[ "$AVAILABLE_REPLICAS" -eq 1 ]]; then
+            echo "Deployment verification successful."
+          else
+            echo "Error: Expected 1 available replica for deployment 'hello-world', found $AVAILABLE_REPLICAS"
+            echo "--- Deployment Status ---"
+            kubectl get deployment hello-world -o wide || true
+            echo "--- Deployment YAML ---"
+            kubectl get deployment hello-world -o yaml || true
+            echo "--- Pods Status ---"
+            kubectl get pods -l app=hello-world || true
+            exit 1
+          fi
+
+      # --- End-to-End Test ---
+      - name: End-to-End Test Service 'hello-world'
+        run: |
+          TIMEOUT_SECONDS="${{ github.event.inputs.timeout }}"
+          WAIT_INTERVAL=10
+
+          # Basic validation for positive integer
+          if ! [[ "$TIMEOUT_SECONDS" =~ ^[1-9][0-9]*$ ]]; then
+            echo "Error: Invalid timeout value '$TIMEOUT_SECONDS'. Must be a positive integer."
+            exit 1
+          fi
+
+          MAX_WAIT_ITERATIONS=$(( TIMEOUT_SECONDS / WAIT_INTERVAL ))
+          echo "Attempting to get External IP for service 'hello-world' (max wait: ${TIMEOUT_SECONDS}s)..."
+
+          EXTERNAL_IP=""
+          for (( i=1; i<=MAX_WAIT_ITERATIONS; i++ )); do
+            # Attempt retrieving an external IP field from the service
+            IP_JSON=$(kubectl get service hello-world -o jsonpath='{.status.loadBalancer.ingress[0].ip}' 2>/dev/null || true)
+            if [[ -n "$IP_JSON" && "$IP_JSON" != "null" && "$IP_JSON" != "<none>" ]]; then
+              EXTERNAL_IP="$IP_JSON"
+              echo "Found External IP: $EXTERNAL_IP"
+              break
+            fi
+
+            if [[ $i -eq $MAX_WAIT_ITERATIONS ]]; then
+               echo "Error: Timed out waiting for External IP for service 'hello-world' after ~${TIMEOUT_SECONDS} seconds."
+               echo "--- Service Status ---"
+               kubectl get service hello-world -o wide || true
+               echo "--- Service YAML ---"
+               kubectl get service hello-world -o yaml || true
+               exit 1
+            fi
+
+            echo "Still waiting for External IP ($(( i * WAIT_INTERVAL ))s / ${TIMEOUT_SECONDS}s)..."
+            sleep $WAIT_INTERVAL
+          done
+
+          if [[ -z "$EXTERNAL_IP" ]]; then
+            echo "Error: External IP was not obtained after loop completion. Unexpected state."
+            exit 1
+          fi
+
+          echo "Running curl test (timeout: ${TIMEOUT_SECONDS}s) against http://$EXTERNAL_IP"
+          export EXTERNAL_IP
+          export TIMEOUT_SECONDS
+
+          timeout "${TIMEOUT_SECONDS}s" bash -c ' \
+            curl -s "http://$EXTERNAL_IP" \
+              --retry 5 \
+              --retry-delay 10 \
+              --max-time "$TIMEOUT_SECONDS" \
+              --fail \
+              --show-error \
+            | grep --color=never "Hello World!" \
+          '
+          TIMEOUT_EXIT_CODE=$?
+
+          if [[ $TIMEOUT_EXIT_CODE -eq 0 ]]; then
+            echo "End-to-End test successful!"
+          elif [[ $TIMEOUT_EXIT_CODE -eq 124 ]]; then
+            echo "Error: Test timed out after $TIMEOUT_SECONDS seconds."
+            exit 1
+          else
+            echo "Error: Test command failed with exit code $TIMEOUT_EXIT_CODE."
+            echo "Attempting final diagnostic curl:"
+            curl -v "http://$EXTERNAL_IP" --connect-timeout 10 --max-time 30 || true
+            exit 1
+          fi

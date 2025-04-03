@@ -1,0 +1,56 @@
+name: Deploy Helm Chart to EKS
+
+on:
+  # Trigger independently on pushes affecting app/ or helm/ directories
+  push:
+    branches:
+      - main
+    paths:
+      - 'app/**'
+      - 'helm/**'
+
+  # The lines below are commented out but left in place
+  # in case you want to trigger a deployment automatically
+  # when your build workflow finishes.
+  #
+  # workflow_run:
+  #   workflows: ["Build and Push App Container to ECR with OIDC"]  # <--- Old build workflow name
+  #   types:
+  #     - completed
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    # Commented out condition that depended on the old build workflow:
+    # if: github.event_name == 'push' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Configure AWS credentials using OIDC
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.githubaws }}
+          aws-region: us-east-1
+
+      - name: Update kubeconfig for EKS
+        run: |
+          # Replace "my-eks-cluster" with the actual name of your EKS cluster
+          aws eks update-kubeconfig --name my-eks-cluster --region us-east-1
+
+      - name: Deploy Helm Chart
+        run: |
+          # Example of overriding the chart’s image to the ECR image built earlier.
+          # If you want the default NGINX image from the chart's values.yaml, remove --set lines.
+          helm upgrade --install demo-service helm/demo-service \
+            --namespace demo-service \
+            --create-namespace \
+            --set deployment.image.repository="123456789012.dkr.ecr.us-east-1.amazonaws.com/hello-world" \
+            --set deployment.image.tag="latest"
