@@ -1,8 +1,3 @@
-
-
-
-
-
 # Security Groups
 resource "aws_security_group" "cluster" {
   name        = "${var.cluster-name}-cluster"
@@ -203,4 +198,99 @@ resource "aws_eks_node_group" "default" {
     Name = "${var.cluster-name}-node-group"
     "kubernetes.io/cluster/${var.cluster-name}" = "owned"
   }
+}
+
+# Add this provider block
+provider "kubernetes" {
+  host                   = aws_eks_cluster.demo.endpoint
+  cluster_ca_certificate = base64decode(aws_eks_cluster.demo.certificate_authority[0].data)
+
+  # Use aws cli to get token for authentication
+  exec {
+    api_version = "client.authentication.k8s.io/v1beta1"
+    command     = "aws"
+    # Use the EKS cluster name to get the token
+    args = ["eks", "get-token", "--cluster-name", aws_eks_cluster.demo.name]
+  }
+}
+
+// variable "oidc_github_actions_role_arn" {
+//   description = "The ARN of the IAM Role created for GitHub Actions OIDC."
+//   type        = string
+//   # You will provide this value via tfvars, env var, or secrets manager
+// }
+
+// variable "admin_user_arns" {
+//   description = "A list of IAM User ARNs to grant cluster-admin access via system:masters."
+//   type        = list(string)
+//   default     = [] // Start with an empty list
+//   # You will provide your user ARN here via tfvars, env var, etc.
+// }
+
+# Add this resource to manage the aws-auth ConfigMap
+resource "kubernetes_config_map_v1" "aws_auth" {
+  metadata {
+    name      = "aws-auth"
+    namespace = "kube-system"
+    # Add labels if desired
+    # labels = {
+    #   "managed-by" = "terraform"
+    # }
+  }
+
+  # Ensure this runs after the cluster and node role are available
+  depends_on = [
+    aws_eks_cluster.demo,
+    aws_iam_role.node # Important: Ensure node role ARN is ready
+  ]
+
+  data = {
+    # --- Role Mappings ---
+    mapRoles = yamlencode([
+      # IMPORTANT: Worker Node Role Mapping - DO NOT REMOVE THIS
+      # This allows your EC2 nodes to join the cluster
+      {
+        rolearn  = aws_iam_role.node.arn # Reference the node role created above
+        username = "system:node:{{EC2PrivateDNSName}}"
+        groups = [
+          "system:bootstrappers",
+          "system:nodes"
+        ]
+      },
+      # GitHub Actions OIDC Role Mapping
+      {
+        rolearn  = var.oidc_github_actions_role_arn # Use the variable
+        username = "github-actions:{{SessionName}}"
+         # Assign to specific group(s) based on your RBAC setup,
+         # or system:masters (with caution) if needed initially
+        groups = [
+           # "system:masters", # Example for admin access
+           "cicd-runners"    # Example custom group
+        ]
+      },
+      # Add any other roles you need mapped here
+    ])
+
+    # --- User Mappings ---
+    mapUsers = yamlencode([
+      # Map each user ARN provided in the variable list
+      for user_arn in var.admin_user_arns : {
+        userarn  = user_arn
+        username = trimsuffix(split("/", user_arn)[1], "@*") # Extracts username, adjust if needed
+        groups = [
+          "system:masters" # WARNING: Grants full cluster admin. Use specific groups if possible.
+        ]
+      }
+      # Add any other specific users you need mapped here
+    ])
+
+    # Add mapAccounts if you need to map entire AWS accounts
+    # mapAccounts = yamlencode([
+    #   "ACCOUNT_ID_1",
+    #   "ACCOUNT_ID_2"
+    # ])
+  }
+
+  # Use immutable = false if you expect to update this configmap often
+  # immutable = false
 }

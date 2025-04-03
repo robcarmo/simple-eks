@@ -39,3 +39,16 @@ variable "node_min_size" {
   type        = number
   default     = 1
 }
+
+
+variable "aws_region" {
+  description = "The AWS region where resources will be created"
+  type        = string
+  default     = "us-east-1"  # You can change this to your desired default region
+}
+
+   variable "oidc_github_actions_role_arn" {
+     description = "The ARN of the IAM role for GitHub Actions OIDC"
+     type        = string
+     default     = ""  # Default can be empty if you are passing it via environment variable
+   }

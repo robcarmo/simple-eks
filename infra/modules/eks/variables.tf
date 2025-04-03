@@ -48,3 +48,22 @@ variable "node_min_size" {
   type        = number
   default     = 1
 }
+
+variable "aws_region" {
+  description = "The AWS region to deploy resources in."
+  type        = string
+  # Default removed or kept if you want a fallback for local runs
+}
+
+variable "oidc_github_actions_role_arn" {
+  description = "The ARN of the IAM Role created for GitHub Actions OIDC."
+  type        = string
+  # No default needed when using TF_VAR_
+}
+
+variable "admin_user_arns" {
+  description = "A list of IAM User ARNs to grant cluster-admin access via system:masters."
+  type        = list(string) # Terraform can usually parse the JSON array string into a list
+  default     = [] # Keep default empty if no users should be mapped by default
+}
+

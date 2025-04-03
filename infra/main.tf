@@ -21,8 +21,10 @@ module "vpc" {
 module "eks" {
   source = "./modules/eks"
   cluster-name = var.cluster-name
+  aws_region = var.aws_region
   kubernetes_version = var.kubernetes_version
   vpc_id = module.vpc.vpc_id
+  oidc_github_actions_role_arn = var.oidc_github_actions_role_arn
   subnet_ids = module.vpc.public_subnet_ids
   node_instance_type = var.node_instance_type
   node_desired_size = var.node_desired_size
