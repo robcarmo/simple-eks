@@ -137,7 +137,6 @@ resource "aws_launch_template" "node" {
   }
 }
 
-# ... existing code ...
 
 # Create a node IAM role for the worker nodes
 resource "aws_iam_role" "node" {
@@ -214,18 +213,6 @@ provider "kubernetes" {
   }
 }
 
-// variable "oidc_github_actions_role_arn" {
-//   description = "The ARN of the IAM Role created for GitHub Actions OIDC."
-//   type        = string
-//   # You will provide this value via tfvars, env var, or secrets manager
-// }
-
-// variable "admin_user_arns" {
-//   description = "A list of IAM User ARNs to grant cluster-admin access via system:masters."
-//   type        = list(string)
-//   default     = [] // Start with an empty list
-//   # You will provide your user ARN here via tfvars, env var, etc.
-// }
 
 # Add this resource to manage the aws-auth ConfigMap
 resource "kubernetes_config_map_v1" "aws_auth" {
@@ -281,16 +268,10 @@ resource "kubernetes_config_map_v1" "aws_auth" {
           "system:masters" # WARNING: Grants full cluster admin. Use specific groups if possible.
         ]
       }
-      # Add any other specific users you need mapped here
+
     ])
 
-    # Add mapAccounts if you need to map entire AWS accounts
-    # mapAccounts = yamlencode([
-    #   "ACCOUNT_ID_1",
-    #   "ACCOUNT_ID_2"
-    # ])
+
   }
 
-  # Use immutable = false if you expect to update this configmap often
-  # immutable = false
 }
