@@ -6,5 +6,9 @@ resource "aws_ecr_repository" "ecr_repo" {
     scan_on_push = var.scan_images_on_push
   }
 
+  lifecycle {
+    ignore_changes = [/* list attributes you want Terraform to ignore */]
+  }
+
   tags = var.tags
 }
