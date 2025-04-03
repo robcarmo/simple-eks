@@ -1,8 +1,0 @@
-aws-auth.yaml
-kubeconfig
-terraform.tfstate
-terraform.tfstate.backup
-.terraform.lock.hcl
-.gitignore
-.terraform
-.DS_Store
