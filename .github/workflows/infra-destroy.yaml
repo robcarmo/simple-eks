@@ -45,7 +45,7 @@ jobs:
           terraform init
 
       - name: Terraform Plan
-        if: ${{ github.event.inputs.action != 'destroy' }}
+        #if: ${{ github.event.inputs.action != 'destroy' }}
         run: |
           cd infra
           terraform plan -out=tfplan
