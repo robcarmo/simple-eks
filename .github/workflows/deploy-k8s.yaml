@@ -43,7 +43,7 @@ jobs:
       - name: Update kubeconfig for EKS
         run: |
           # Replace "my-eks-cluster" with the actual name of your EKS cluster
-          aws eks update-kubeconfig --name my-eks-cluster --region us-east-1
+          aws eks update-kubeconfig --name cc-eks --region us-east-1
 
       - name: Deploy Helm Chart
         run: |
@@ -52,5 +52,5 @@ jobs:
           helm upgrade --install demo-service helm/demo-service \
             --namespace demo-service \
             --create-namespace \
-            --set deployment.image.repository="123456789012.dkr.ecr.us-east-1.amazonaws.com/hello-world" \
+            --set deployment.image.repository="${{ secrets.ECR_REPOSITORY }}" \
             --set deployment.image.tag="latest"
