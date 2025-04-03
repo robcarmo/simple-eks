@@ -2,17 +2,21 @@ namespace:
   name: demo-service
 
 deployment:
-  name: demo-service-nginx
+  name: demo-service
   replicaCount: 1
   image:
-    repository: nginx
-    tag: latest
+    repository: "{{ .Values.image.repository }}"
+    tag: "{{ .Values.image.tag }}"
     pullPolicy: IfNotPresent
   labels:
-    app: nginx
+    app: demo-service
 
 service:
-  name: demo-service-nginx-svc
+  name: demo-service-svc
   type: LoadBalancer
   port: 8080
   targetPort: 80
+
+image:
+  repository: "nginx"  # Default value, can be overridden by Helm --set or values file
+  tag: "latest"        # Default value, can be overridden by Helm --set or values file
