@@ -52,9 +52,9 @@ jobs:
       # --- Deployment Verification ---
       - name: Verify Deployment 'demo-service'
         run: |
-          echo "Verifying deployment 'demo-service' has 1 available replica..."
+          echo "Verifying deployment 'demo-service' has 1 available replica in any namespace..."
           sleep 5  # Short wait for context to be ready
-          AVAILABLE_REPLICAS=$(kubectl get deployment demo-service -o jsonpath='{.status.availableReplicas}' 2>/dev/null || echo "0")
+          AVAILABLE_REPLICAS=$(kubectl get deployment demo-service --all-namespaces -o jsonpath='{.items[0].status.availableReplicas}' 2>/dev/null || echo "0")
 
           if [[ "$AVAILABLE_REPLICAS" -eq 1 ]]; then
             echo "Deployment verification successful."
@@ -62,11 +62,11 @@ jobs:
             echo "Error: Expected 1 available replica for deployment 'demo-service', found $AVAILABLE_REPLICAS"
             echo "--- Deployment Status ---"
             kubectl get all -A
-            kubectl get deployment demo-service -o wide || true
+            kubectl get deployment demo-service --all-namespaces -o wide || true
             echo "--- Deployment YAML ---"
-            kubectl get deployment demo-service -o yaml || true
+            kubectl get deployment demo-service --all-namespaces -o yaml || true
             echo "--- Pods Status ---"
-            kubectl get pods -l app=demo-service || true
+            kubectl get pods --all-namespaces -l app=demo-service || true
             exit 1
           fi
 
