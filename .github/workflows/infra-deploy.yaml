@@ -62,7 +62,7 @@ jobs:
       - name: Terraform Apply
         # Only run apply on pushes to the master branch
         #if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-        run: terraform destroy -auto-approve # -input=false tfplan
+        run: terraform apply -auto-approve -input=false tfplan
         env:
           # Repeat the environment variable mapping for the apply step
           TF_VAR_oidc_github_actions_role_arn: ${{ secrets.GITHUBAWS }}
