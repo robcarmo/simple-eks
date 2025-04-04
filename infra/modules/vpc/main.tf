@@ -27,6 +27,7 @@ resource "aws_subnet" "public" {
     {
       "Name" = "${var.name_prefix}-public-subnet-${data.aws_availability_zones.available.names[count.index]}"
       "kubernetes.io/role/elb" = "1"
+      "kubernetes.io/cluster/${var.name_prefix}" = "owned"
     },
     var.tags
   )
