@@ -1,9 +1,13 @@
+# .github/workflows/deploy-infra.yml (or your chosen filename)
+
 name: AWS Infrastructure Management
 
 on:
   push:
     branches:
-      - master
+      - master # Or your primary branch name (e.g., main)
+    paths:
+      - 'infra/**' # Trigger workflow only on changes within the infra directory
   workflow_dispatch:
     inputs:
       action:
@@ -15,49 +19,84 @@ on:
           - apply
           - destroy
 
+# Permissions required for OIDC authentication and checking out code
 permissions:
-  id-token: write
-  contents: read
+  id-token: write # Required for aws-actions/configure-aws-credentials using OIDC
+  contents: read  # Required for actions/checkout
 
 jobs:
   manage-infra:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        # *** CRITICAL FIX ***
+        # Sets the working directory for ALL subsequent 'run' steps in this job.
+        # This ensures terraform init, plan, apply, destroy execute in ./infra
+        working-directory: ./infra
     steps:
+      # Step 1: Check out the repository code
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        # Note: Checkout action runs at the repository root level
 
+      # Step 2: Set up the desired Terraform version
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
+        uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: '1.0.0'
+          terraform_version: '1.0.0' # Specify your required Terraform version
 
+      # Step 3: Configure AWS Credentials using OIDC Role
       - name: Configure AWS credentials using OIDC
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
+          # The ARN of the IAM role created specifically for GitHub Actions OIDC
           role-to-assume: ${{ secrets.githubaws }}
-          aws-region: us-east-1  # AWS region as specified
+          aws-region: us-east-1 # Specify your target AWS region
 
+      # Step 4: Terraform Init (Runs in ./infra due to job defaults)
+      # Initializes Terraform, downloads providers, and configures the S3 backend.
       - name: Terraform Init
         id: init
         run: terraform init -input=false -reconfigure -backend-config="bucket=${{ secrets.TF_STATE_BUCKET }}" -backend-config="key=infra/terraform.tfstate" -backend-config="region=us-east-1"
         env:
-          # Pass AWS credentials if needed for init, though OIDC should handle it
+          # AWS_REGION is usually picked up automatically by the provider from credentials,
+          # but setting it can resolve ambiguity if needed during init.
           AWS_REGION: us-east-1
 
+      # Step 5: Terraform Plan (Runs in ./infra due to job defaults)
+      # Creates an execution plan. Skips if the dispatched action is 'destroy'.
       - name: Terraform Plan
-        #if: ${{ github.event.inputs.action != 'destroy' }}
-        run: |
-          cd infra
-          terraform plan -out=tfplan
+        if: ${{ github.event.inputs.action != 'destroy' }}
+        run: terraform plan -out=tfplan -input=false
+        env:
+          # These TF_VAR_ environment variables pass values into your Terraform configuration
+          # Make sure the variable names match your variables.tf files (e.g., var.admin_user_arns)
+          TF_VAR_oidc_github_actions_role_arn: ${{ secrets.githubaws }}         # For aws-auth ConfigMap
+          TF_VAR_admin_user_arns: ${{ secrets.ADMIN_USER_ARN }}               # For aws-auth ConfigMap (single ARN string)
+          TF_VAR_admin_k8s_username: ${{ secrets.ADMIN_K8S_USERNAME }}          # For aws-auth ConfigMap (single username string)
+          TF_VAR_aws_region: us-east-1                                         # If needed by your Terraform modules/resources
 
+      # Step 6: Terraform Apply (Runs in ./infra due to job defaults)
+      # Applies the changes defined in the plan. Skips if the dispatched action is 'destroy'.
       - name: Terraform Apply
         if: ${{ github.event.inputs.action != 'destroy' }}
-        run: |
-          cd infra
-          terraform apply -auto-approve tfplan
+        run: terraform apply -auto-approve -input=false tfplan
+        env:
+          # Repeat the TF_VARs needed during the apply phase
+          TF_VAR_oidc_github_actions_role_arn: ${{ secrets.githubaws }}
+          TF_VAR_admin_user_arns: ${{ secrets.ADMIN_USER_ARN }}
+          TF_VAR_admin_k8s_username: ${{ secrets.ADMIN_K8S_USERNAME }}
+          TF_VAR_aws_region: us-east-1
 
+      # Step 7: Terraform Destroy (Runs in ./infra due to job defaults)
+      # Destroys the managed infrastructure. Only runs if dispatched action is 'destroy'.
       - name: Terraform Destroy
         if: ${{ github.event.inputs.action == 'destroy' }}
-        run: |
-          cd infra
-          terraform destroy -auto-approve
+        run: terraform destroy -auto-approve
+        env:
+          # Repeat the TF_VARs potentially needed during the destroy phase
+          # These ensure Terraform knows context when calculating destroy actions
+          TF_VAR_oidc_github_actions_role_arn: ${{ secrets.githubaws }}
+          TF_VAR_admin_user_arns: ${{ secrets.ADMIN_USER_ARN }}
+          TF_VAR_admin_k8s_username: ${{ secrets.ADMIN_K8S_USERNAME }}
+          TF_VAR_aws_region: us-east-1
