@@ -63,7 +63,12 @@ variable "oidc_github_actions_role_arn" {
 
 variable "admin_user_arns" {
   description = "A list of IAM User ARNs to grant cluster-admin access via system:masters."
-  type        = list(string) # Terraform can usually parse the JSON array string into a list
-  default     = [] # Keep default empty if no users should be mapped by default
+  type        = string
+  default     = ""
 }
 
+variable "admin_k8s_username" {
+  description = "The desired Kubernetes username for the admin user."
+  type        = string
+  default     = ""
+}

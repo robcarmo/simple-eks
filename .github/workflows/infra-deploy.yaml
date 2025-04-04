@@ -67,6 +67,7 @@ jobs:
           # Repeat the environment variable mapping for the apply step
           TF_VAR_oidc_github_actions_role_arn: ${{ secrets.GITHUBAWS }}
           TF_VAR_admin_user_arns: ${{ secrets.ADMIN_USER_ARNS_JSON }}
+          TF_VAR_admin_k8s_username: ${{ secrets.ADMIN_K8S_USERNAME }}
           TF_VAR_aws_region: us-east-1
           # Add TF_VAR_ for any other variables needed by your infra code
           # TF_VAR_cluster_name: ${{ secrets.EKS_CLUSTER_NAME }} # Example

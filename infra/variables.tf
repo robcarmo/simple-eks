@@ -52,3 +52,15 @@ variable "aws_region" {
      type        = string
      default     = ""  # Default can be empty if you are passing it via environment variable
    }
+
+   variable "admin_k8s_username" {
+  description = "The desired Kubernetes username for the primary admin user."
+  type        = string
+  default     = "" # Or a sensible default if applicable
+}
+
+variable "admin_user_arns" {
+  description = "A list of IAM User ARNs to grant cluster-admin access via system:masters."
+  type        = string
+  default     = ""#
+}

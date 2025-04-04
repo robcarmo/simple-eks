@@ -229,6 +229,7 @@ resource "kubernetes_config_map_v1" "aws_auth" {
 
   data = {
     # --- Role Mappings ---
+    # This section remains unchanged
     mapRoles = yamlencode([
       # IMPORTANT: Worker Node Role Mapping - DO NOT REMOVE THIS
       # This allows your EC2 nodes to join the cluster
@@ -244,32 +245,33 @@ resource "kubernetes_config_map_v1" "aws_auth" {
       {
         rolearn  = var.oidc_github_actions_role_arn # Use the variable
         username = "github-actions:{{SessionName}}"
-         # Assign to specific group(s) based on your RBAC setup,
-         # or system:masters (with caution) if needed initially
+        # Assign to specific group(s) based on your RBAC setup,
+        # or system:masters (with caution) if needed initially
         groups = [
            # "system:masters", # Example for admin access
            "cicd-runners"    # Example custom group
         ]
       },
-      # Add any other roles you need mapped here
-    ])
+      # Add any other roles you need mapped here if desired
+    ]), # Closing parenthesis for mapRoles yamlencode
 
-    # --- User Mappings ---
-    mapUsers = yamlencode([
-      # Map each user ARN provided in the variable list
-      for user_arn in var.admin_user_arns : {
-        userarn  = user_arn
-        username = trimsuffix(split("/", user_arn)[1], "@*") # Extracts username, adjust if needed
-        groups = [
-          "system:masters" # WARNING: Grants full cluster admin. Use specific groups if possible.
-        ]
-      }
+    # --- User Mappings (Revised for single user) ---
+    mapUsers = yamlencode(
+      # Condition: Only proceed if BOTH the admin ARN string AND the admin username string are not empty
+      (var.admin_user_arns != "" && var.admin_k8s_username != "") ?
+      # If TRUE: Create a list containing one user map object
+      [
+        {
+          userarn  = var.admin_user_arns      # Use the admin ARN string directly
+          username = var.admin_k8s_username   # Use the admin username string directly
+          groups   = [ "system:masters" ]     # Grant admin privileges
+        }
+      ] :
+      # If FALSE (either variable is empty): Create an empty list
+      []
+    ) # Closing parenthesis for mapUsers yamlencode
 
-    ])
-
-
-  }
-
+  } # Closing brace for the data block
 }
 
 resource "aws_iam_instance_profile" "node" {
