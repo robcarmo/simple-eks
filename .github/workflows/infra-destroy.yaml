@@ -3,11 +3,6 @@
 name: AWS Infrastructure Management
 
 on:
-  push:
-    branches:
-      - master # Or your primary branch name (e.g., main)
-    paths:
-      - 'infra/**'
   workflow_dispatch:
     inputs:
       action:
