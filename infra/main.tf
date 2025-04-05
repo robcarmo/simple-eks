@@ -24,7 +24,6 @@ module "eks" {
   aws_region = var.aws_region
   kubernetes_version = var.kubernetes_version
   vpc_id = module.vpc.vpc_id
-  oidc_github_actions_role_arn = var.oidc_github_actions_role_arn
   admin_user_arns = var.admin_user_arns
   admin_k8s_username = var.admin_k8s_username
   subnet_ids = module.vpc.public_subnet_ids

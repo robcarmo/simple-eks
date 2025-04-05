@@ -241,18 +241,6 @@ resource "kubernetes_config_map_v1" "aws_auth" {
           "system:nodes"
         ]
       },
-      # GitHub Actions OIDC Role Mapping
-      {
-        rolearn  = var.oidc_github_actions_role_arn # Use the variable
-        username = "github-actions:{{SessionName}}"
-        # Assign to specific group(s) based on your RBAC setup,
-        # or system:masters (with caution) if needed initially
-        groups = [
-           # "system:masters", # Example for admin access
-           "cicd-runners"    # Example custom group
-        ]
-      },
-      # Add any other roles you need mapped here if desired
     ]), # Closing parenthesis for mapRoles yamlencode
 
     # --- User Mappings (Revised for single user) ---
