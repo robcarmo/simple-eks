@@ -196,6 +196,12 @@
         Name = "${var.cluster-name}-node-group"
         "kubernetes.io/cluster/${var.cluster-name}" = "owned"
       }
+      timeouts {
+        create = "5m" # Set create timeout to 5 minutes
+        # Optionally add update/delete timeouts if desired
+        update = "10m"
+        delete = "15m"
+      }      
     }
 
     # Add this provider block
@@ -213,54 +219,54 @@
     }
 
     # Add this resource to manage the aws-auth ConfigMap
-    resource "kubernetes_config_map_v1" "aws_auth" {
-      metadata {
-        name      = "aws-auth"
-        namespace = "kube-system"
-        # labels = {
-        #   "managed-by" = "terraform"
-        # }
-      }
+    // resource "kubernetes_config_map_v1" "aws_auth" {
+    //   metadata {
+    //     name      = "aws-auth"
+    //     namespace = "kube-system"
+    //     # labels = {
+    //     #   "managed-by" = "terraform"
+    //     # }
+    //   }
 
-      depends_on = [
-        aws_eks_cluster.demo,
-        aws_iam_role.node
-      ]
+    //   depends_on = [
+    //     aws_eks_cluster.demo,
+    //     aws_iam_role.node
+    //   ]
 
-      data = {
-        # --- Role Mappings ---
-        # Node role mapping - KEEP AS IS
-        mapRoles = yamlencode([
-          {
-            rolearn  = aws_iam_role.node.arn
-            username = "system:node:{{EC2PrivateDNSName}}"
-            groups = [
-              "system:bootstrappers",
-              "system:nodes"
-            ]
-          },
-          # Add other role mappings if needed
-        ]), # Closing parenthesis for mapRoles
+    //   data = {
+    //     # --- Role Mappings ---
+    //     # Node role mapping - KEEP AS IS
+    //     mapRoles = yamlencode([
+    //       {
+    //         rolearn  = aws_iam_role.node.arn
+    //         username = "system:node:{{EC2PrivateDNSName}}"
+    //         groups = [
+    //           "system:bootstrappers",
+    //           "system:nodes"
+    //         ]
+    //       },
+    //       # Add other role mappings if needed
+    //     ]), // Closing parenthesis for mapRoles
 
-        # --- User Mappings ---
-        # ONLY Map the single user (which serves as both admin and pipeline identity)
-        mapUsers = yamlencode(
-          # Condition: Only proceed if BOTH the ARN string AND the username string are not empty
-          (var.admin_user_arns != "" && var.admin_k8s_username != "") ?
-          # If TRUE: Create a list containing the single user map object
-          [
-            {
-              userarn  = var.admin_user_arns      # The ARN of the user (e.g., robaws)
-              username = var.admin_k8s_username   # The k8s username (e.g., robaws)
-              groups   = [ "system:masters" ]     # Grant admin privileges
-            }
-          ] :
-          # If FALSE (either variable is empty): Create an empty list
-          []
-        ) # Closing parenthesis for mapUsers
+    //     # --- User Mappings ---
+    //     # ONLY Map the single user (which serves as both admin and pipeline identity)
+    //     mapUsers = yamlencode(
+    //       # Condition: Only proceed if BOTH the ARN string AND the username string are not empty
+    //       (var.admin_user_arns != "" && var.admin_k8s_username != "") ?
+    //       # If TRUE: Create a list containing the single user map object
+    //       [
+    //         {
+    //           userarn  = var.admin_user_arns      # The ARN of the user (e.g., robaws)
+    //           username = var.admin_k8s_username   # The k8s username (e.g., robaws)
+    //           groups   = [ "system:masters" ]     # Grant admin privileges
+    //         }
+    //       ] :
+    //       # If FALSE (either variable is empty): Create an empty list
+    //       []
+    //     ) // Closing parenthesis for mapUsers
 
-      } # Closing brace for the data block
-    }
+    //   } // Closing brace for the data block
+    // }
 
     resource "aws_iam_instance_profile" "node" {
       name = "${var.cluster-name}-node-profile"

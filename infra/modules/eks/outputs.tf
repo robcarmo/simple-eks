@@ -27,3 +27,8 @@ output "subnet_ids" {
   description = "List of subnet IDs"
   value       = var.subnet_ids
 }
+
+output "node_role_arn" {
+description = "ARN of the IAM role for worker nodes"
+value       = aws_iam_role.node.arn
+}

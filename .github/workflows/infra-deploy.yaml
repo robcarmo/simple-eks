@@ -5,9 +5,9 @@ name: AWS Infrastructure Management (Using Access Keys)
 on:
   push:
     branches:
-      - master # Or your primary branch name (e.g., main)
+      - master
     paths:
-      - 'infra/**' # Trigger workflow only on changes within the infra directory
+      - 'infra/**'
   workflow_dispatch:
     inputs:
       action:
@@ -19,77 +19,126 @@ on:
           - apply
           - destroy
 
-# Permissions: Only 'contents: read' is needed for checkout when using static keys
 permissions:
-  contents: read  # Required for actions/checkout
+  contents: read
 
 jobs:
   manage-infra:
     runs-on: ubuntu-latest
     defaults:
       run:
-        # Set the working directory for ALL subsequent 'run' steps in this job.
-        # Ensures terraform commands execute in ./infra
         working-directory: ./infra
-    # Define AWS credentials and region as environment variables for the entire job
-    # Terraform and AWS CLI will automatically pick these up.
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      # AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }} # Optional: Add if using temporary credentials
-      AWS_REGION: us-east-1 # Set default region for AWS interactions
+      AWS_REGION: us-east-1
 
     steps:
-      # Step 1: Check out the repository code
+      # Step 1: Checkout code
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Step 2: Set up the desired Terraform version
+      # Step 2: Setup Terraform
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: '1.0.0' # Specify your required Terraform version
+          terraform_version: '1.0.0'
 
-      # Step 3: REMOVED - Configure AWS credentials using OIDC is no longer needed
-
-      # Step 4: Terraform Init (Runs in ./infra due to job defaults)
-      # Initializes Terraform, downloads providers, and configures the S3 backend.
-      # Uses AWS credentials defined in the job's 'env' block.
+      # Step 3: Terraform Init
       - name: Terraform Init
         id: init
         run: terraform init -input=false -reconfigure -backend-config="bucket=${{ secrets.TF_STATE_BUCKET }}" -backend-config="key=infra/terraform.tfstate" -backend-config="region=us-east-1"
-        # No explicit env needed here, uses job env
 
-      # Step 5: Terraform Plan (Runs in ./infra due to job defaults)
-      # Creates an execution plan. Skips if the dispatched action is 'destroy'.
+      # Step 4: Terraform Plan
       - name: Terraform Plan
+        id: plan # Add id for potential future use
         if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.action != 'destroy')
         run: terraform plan -out=tfplan -input=false
         env:
-          # Pass non-credential variables needed by the Terraform configuration itself
-          # TF_VAR_oidc_github_actions_role_arn: # REMOVED
-          TF_VAR_admin_user_arns: ${{ secrets.ADMIN_USER_ARN }}       # Pass the SINGLE admin user ARN string
-          TF_VAR_admin_k8s_username: ${{ secrets.ADMIN_K8S_USERNAME }}  # Pass the admin Kubernetes username string
-          # TF_VAR_aws_region: us-east-1 # Not strictly needed if AWS_REGION is set globally
-
-      # Step 6: Terraform Apply (Runs in ./infra due to job defaults)
-      # Applies the changes defined in the plan. Skips if dispatched action is 'destroy'.
-      - name: Terraform Apply
-        if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.action != 'destroy')
-        run: terraform apply -auto-approve -input=false tfplan
-        env:
-          # Repeat non-credential TF_VARs needed during the apply phase
+          # Pass non-credential TF variables needed ONLY by terraform config itself
           TF_VAR_admin_user_arns: ${{ secrets.ADMIN_USER_ARN }}
           TF_VAR_admin_k8s_username: ${{ secrets.ADMIN_K8S_USERNAME }}
-          # TF_VAR_aws_region: us-east-1
+          # TF_VAR_aws_region: us-east-1 # Not needed if set globally
 
-      # Step 7: Terraform Destroy (Runs in ./infra due to job defaults)
-      # Destroys the managed infrastructure. Only runs if dispatched action is 'destroy'.
+      # Step 5: Terraform Apply
+      - name: Terraform Apply
+        id: apply # Add id for potential future use
+        if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.action != 'destroy')
+        run: terraform apply -auto-approve -input=false tfplan
+        # No extra env vars needed here unless apply needs TF_VARs differently than plan
+
+      # --- NEW STEP ---
+      # Step 5a: Generate and Apply aws-auth ConfigMap via kubectl
+      - name: Apply aws-auth ConfigMap
+        # Run only after a successful apply action
+        if: steps.apply.outcome == 'success' && (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.action != 'destroy'))
+        env:
+          # Make secrets easily available to the script
+          ADMIN_ARN: ${{ secrets.ADMIN_USER_ARN }}
+          ADMIN_USER: ${{ secrets.ADMIN_K8S_USERNAME }}
+          # Add other secrets if needed for other mappings
+        run: |
+          echo "Fetching Terraform outputs..."
+          # Get Node Role ARN - ensure output name matches root outputs.tf
+          NODE_ROLE_ARN=$(terraform output -raw eks_node_role_arn)
+          # Get Cluster Name - define an output or use variable directly if simpler
+          CLUSTER_NAME=$(terraform output -raw cluster_id) # Assuming cluster_id output is just the name
+
+          if [[ -z "$NODE_ROLE_ARN" ]]; then
+            echo "::error::Failed to get Node Role ARN from Terraform output."
+            exit 1
+          fi
+          if [[ -z "$CLUSTER_NAME" ]]; then
+            echo "::error::Failed to get Cluster Name from Terraform output."
+            exit 1
+          fi
+          if [[ -z "$ADMIN_ARN" || -z "$ADMIN_USER" ]]; then
+            echo "::error::Admin ARN or Username secrets are missing or empty."
+            exit 1
+          fi
+
+          echo "Generating aws-auth-manifest.yaml content..."
+          # Use cat with EOF to create the manifest content dynamically
+          # IMPORTANT: Ensure indentation within the mapRoles/mapUsers YAML is correct (usually 2 spaces)
+          cat << EOF > /tmp/aws-auth-manifest.yaml
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: aws-auth
+            namespace: kube-system
+          data:
+            mapRoles: |
+              - rolearn: ${NODE_ROLE_ARN}
+                username: system:node:{{EC2PrivateDNSName}}
+                groups:
+                  - system:bootstrappers
+                  - system:nodes
+              # Add other role mappings here if needed (e.g., for cluster autoscaler)
+            mapUsers: |
+              - userarn: ${ADMIN_ARN}
+                username: ${ADMIN_USER}
+                groups:
+                  - system:masters
+          EOF
+
+          echo "Generated Manifest:"
+          cat /tmp/aws-auth-manifest.yaml
+
+          echo "Configuring kubectl..."
+          # Use the pipeline's AWS credentials to configure kubectl
+          aws eks update-kubeconfig --name ${CLUSTER_NAME} --region ${AWS_REGION} # Uses job env AWS creds
+
+          echo "Applying aws-auth ConfigMap..."
+          kubectl apply -f /tmp/aws-auth-manifest.yaml
+
+          echo "aws-auth ConfigMap applied successfully."
+
+      # Step 6: Terraform Destroy
       - name: Terraform Destroy
         if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'destroy'
         run: terraform destroy -auto-approve
         env:
-          # Repeat non-credential TF_VARs potentially needed during the destroy phase
+          # Pass TF_VARs needed for destroy
           TF_VAR_admin_user_arns: ${{ secrets.ADMIN_USER_ARN }}
           TF_VAR_admin_k8s_username: ${{ secrets.ADMIN_K8S_USERNAME }}
           # TF_VAR_aws_region: us-east-1
