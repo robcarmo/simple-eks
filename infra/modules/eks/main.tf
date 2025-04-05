@@ -120,7 +120,7 @@
 
     # Worker node configuration
     resource "aws_launch_template" "node" {
-      name_prefix   = "${var.cluster-name}-launch-template"
+      name        = "${var.cluster-name}-launch-template-node"
       instance_type = var.node_instance_type
       image_id      = data.aws_ami.eks-worker.id
 
