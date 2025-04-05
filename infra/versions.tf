@@ -2,23 +2,18 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.0" # Pinning provider version is recommended
+      version = "~> 5.0" // Ensure compatibility with AWS resources
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "~> 2.0" # Adjust version as needed
+      version = "~> 2.0" // Ensure compatibility with Kubernetes resources
     }
-    # Add external provider if still needed, though it seems removed now
-    # external = {
-    #   source = "hashicorp/external"
-    #   version = "~> 2.0"
-    # }
   }
 
   backend "s3" {
-    # Bucket name will be provided during init via -backend-config
-    key     = "infra/terraform.tfstate" # Path to state file within the bucket
-    region  = "us-east-1"               # Assuming bucket region matches provider/workflows
-    encrypt = true                      # Enable server-side encryption
+    bucket  = "tfstate-dev-qjau56sf"    // Added bucket name
+    key     = "infra/terraform.tfstate" // Path to state file within the bucket
+    region  = "us-east-1"               // Ensure this matches the bucket's region
+    encrypt = true                      // Enable server-side encryption
   }
 }

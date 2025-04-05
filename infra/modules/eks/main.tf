@@ -120,7 +120,7 @@ data "aws_ami" "eks-worker" {
 
 # Worker node configuration
 resource "aws_launch_template" "node" {
-  name_prefix = "${var.cluster-name}-node-"
+  name_prefix = "${var.cluster-name}-launch-template"
   instance_type = var.node_instance_type
   image_id      = data.aws_ami.eks-worker.id
 
@@ -169,6 +169,7 @@ resource "aws_iam_role_policy_attachment" "node-AmazonEC2ContainerRegistryReadOn
 # Use an EKS-managed node group that references the existing launch template
 resource "aws_eks_node_group" "default" {
   cluster_name    = aws_eks_cluster.demo.name
+  node_group_name = "${var.cluster-name}-node-group"
   node_role_arn   = aws_iam_role.node.arn
   subnet_ids      = var.subnet_ids
   launch_template {
@@ -176,6 +177,8 @@ resource "aws_eks_node_group" "default" {
     version = "$Latest"   # or a specific version number
   }
 
+  ami_type = "AL2_x86_64"
+  
   # Example scaling configuration
   scaling_config {
     desired_size = var.node_desired_size
