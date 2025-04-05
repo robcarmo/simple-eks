@@ -1,73 +1,95 @@
-name: Deploy Infrastructure to AWS
+# .github/workflows/deploy-infra.yml
+
+name: AWS Infrastructure Management (Using Access Keys)
 
 on:
   push:
     branches:
-      - master # Note: Changed from main if your branch is master
+      - master # Or your primary branch name (e.g., main)
     paths:
-      - 'infra/**'
-  workflow_dispatch:  # Allows manual triggering
+      - 'infra/**' # Trigger workflow only on changes within the infra directory
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Action to perform (apply or destroy)'
+        required: true
+        default: 'apply'
+        type: choice
+        options:
+          - apply
+          - destroy
 
-# Permissions required for OIDC and checking out code
+# Permissions: Only 'contents: read' is needed for checkout when using static keys
 permissions:
-  id-token: write # Required for OIDC
-  contents: read  # Required for checkout
+  contents: read  # Required for actions/checkout
 
 jobs:
-  deploy-infra:
+  manage-infra:
     runs-on: ubuntu-latest
     defaults:
       run:
-        # Set the working directory for all run steps in this job
+        # Set the working directory for ALL subsequent 'run' steps in this job.
+        # Ensures terraform commands execute in ./infra
         working-directory: ./infra
+    # Define AWS credentials and region as environment variables for the entire job
+    # Terraform and AWS CLI will automatically pick these up.
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      # AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }} # Optional: Add if using temporary credentials
+      AWS_REGION: us-east-1 # Set default region for AWS interactions
+
     steps:
+      # Step 1: Check out the repository code
       - name: Checkout code
-        uses: actions/checkout@v4 # Updated to v4
+        uses: actions/checkout@v4
 
-      - name: Configure AWS Credentials using OIDC
-        uses: aws-actions/configure-aws-credentials@v4 # Updated to v4
-        with:
-          # Role ARN that the GitHub Actions runner will assume
-          role-to-assume: ${{ secrets.GITHUBAWS }} # Use the secret for the role the WORKFLOW assumes
-          aws-region: us-east-1 # Use the region secret
-
+      # Step 2: Set up the desired Terraform version
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3 # Updated to v3
-        # Keeping TF version 1.0.0 as you specified, update if needed
+        uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: '1.0.0'
-          # Add terraform_wrapper: true if using Terragrunt
+          terraform_version: '1.0.0' # Specify your required Terraform version
 
-      # Terraform Init no longer needs cd infra due to job defaults
+      # Step 3: REMOVED - Configure AWS credentials using OIDC is no longer needed
+
+      # Step 4: Terraform Init (Runs in ./infra due to job defaults)
+      # Initializes Terraform, downloads providers, and configures the S3 backend.
+      # Uses AWS credentials defined in the job's 'env' block.
       - name: Terraform Init
         id: init
         run: terraform init -input=false -reconfigure -backend-config="bucket=${{ secrets.TF_STATE_BUCKET }}" -backend-config="key=infra/terraform.tfstate" -backend-config="region=us-east-1"
-        env:
-          # Pass AWS credentials if needed for init, though OIDC should handle it
-          AWS_REGION: us-east-1
+        # No explicit env needed here, uses job env
 
-      # Terraform Plan no longer needs cd infra due to job defaults
+      # Step 5: Terraform Plan (Runs in ./infra due to job defaults)
+      # Creates an execution plan. Skips if the dispatched action is 'destroy'.
       - name: Terraform Plan
+        if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.action != 'destroy')
         run: terraform plan -out=tfplan -input=false
         env:
-          # Map GitHub Secrets to TF_VAR environment variables
-          # These are used by the Terraform code itself (e.g., for aws-auth)
-          TF_VAR_oidc_github_actions_role_arn: ${{ secrets.GITHUBAWS }}
-          TF_VAR_admin_user_arns: ${{ secrets.ADMIN_USER_ARNS_JSON }}
-          TF_VAR_aws_region: us-east-1
-          # Add TF_VAR_ for any other variables needed by your infra code
-          # TF_VAR_cluster_name: ${{ secrets.EKS_CLUSTER_NAME }} # Example
+          # Pass non-credential variables needed by the Terraform configuration itself
+          # TF_VAR_oidc_github_actions_role_arn: # REMOVED
+          TF_VAR_admin_user_arns: ${{ secrets.ADMIN_USER_ARN }}       # Pass the SINGLE admin user ARN string
+          TF_VAR_admin_k8s_username: ${{ secrets.ADMIN_K8S_USERNAME }}  # Pass the admin Kubernetes username string
+          # TF_VAR_aws_region: us-east-1 # Not strictly needed if AWS_REGION is set globally
 
-      # Terraform Apply no longer needs cd infra due to job defaults
+      # Step 6: Terraform Apply (Runs in ./infra due to job defaults)
+      # Applies the changes defined in the plan. Skips if dispatched action is 'destroy'.
       - name: Terraform Apply
-        # Only run apply on pushes to the master branch
-        #if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.action != 'destroy')
         run: terraform apply -auto-approve -input=false tfplan
         env:
-          # Repeat the environment variable mapping for the apply step
-          TF_VAR_oidc_github_actions_role_arn: ${{ secrets.GITHUBAWS }}
-          TF_VAR_admin_user_arns: ${{ secrets.ADMIN_USER_ARNS_JSON }}
+          # Repeat non-credential TF_VARs needed during the apply phase
+          TF_VAR_admin_user_arns: ${{ secrets.ADMIN_USER_ARN }}
           TF_VAR_admin_k8s_username: ${{ secrets.ADMIN_K8S_USERNAME }}
-          TF_VAR_aws_region: us-east-1
-          # Add TF_VAR_ for any other variables needed by your infra code
-          # TF_VAR_cluster_name: ${{ secrets.EKS_CLUSTER_NAME }} # Example
+          # TF_VAR_aws_region: us-east-1
+
+      # Step 7: Terraform Destroy (Runs in ./infra due to job defaults)
+      # Destroys the managed infrastructure. Only runs if dispatched action is 'destroy'.
+      - name: Terraform Destroy
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'destroy'
+        run: terraform destroy -auto-approve
+        env:
+          # Repeat non-credential TF_VARs potentially needed during the destroy phase
+          TF_VAR_admin_user_arns: ${{ secrets.ADMIN_USER_ARN }}
+          TF_VAR_admin_k8s_username: ${{ secrets.ADMIN_K8S_USERNAME }}
+          # TF_VAR_aws_region: us-east-1
