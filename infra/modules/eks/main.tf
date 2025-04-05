@@ -197,10 +197,10 @@
         "kubernetes.io/cluster/${var.cluster-name}" = "owned"
       }
       timeouts {
-        create = "5m" # Set create timeout to 5 minutes
+        create = "10m" # Set create timeout to 5 minutes
         # Optionally add update/delete timeouts if desired
-        update = "10m"
-        delete = "15m"
+        update = "15m"
+        delete = "25m"
       }      
     }
 
