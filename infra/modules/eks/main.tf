@@ -177,8 +177,7 @@ resource "aws_eks_node_group" "default" {
     version = "$Latest"   # or a specific version number
   }
 
-  ami_type = "AL2_x86_64"
-  
+
   # Example scaling configuration
   scaling_config {
     desired_size = var.node_desired_size
