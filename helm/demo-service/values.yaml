@@ -15,7 +15,7 @@ service:
   name: demo-service-svc
   type: LoadBalancer
   port: 8080
-  targetPort: 8080
+  targetPort: 808080
 
 image:
   repository: "nginx"  # Default value, can be overridden by Helm --set or values file

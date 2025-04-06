@@ -1,153 +1,94 @@
-# Terraform EKS Module
+# Simple EKS Cluster with GitHub Actions
 
-This repository contains Terraform configurations for deploying an Amazon EKS cluster with integrated networking and Kubernetes resource management. It now also includes a Helm chart for managing Kubernetes resources.
+This repository contains Terraform configurations and GitHub Actions workflows for deploying and managing an Amazon EKS cluster using AWS access keys.
 
 ## Repository Structure
-```
-├── helm/
-│   └── demo-service/ # Helm chart for deploying the demo service
-│       ├── Chart.yaml
-│       ├── values.yaml
-│       └── templates/ # Kubernetes manifest templates
-├── infra/
-│   ├── main.tf # Core configuration
-│   ├── modules/
-│   │   ├── eks/ # EKS cluster module
-│   │   │   ├── main.tf # Security groups, IAM roles, EKS cluster
-│   │   │   ├── variables.tf # Module inputs
-│   │   │   └── outputs.tf # Module outputs
-│   │   ├── vpc/ # Networking module
-│   │   │   ├── main.tf # VPC, subnets, routing
-│   │   │   ├── variables.tf # Networking inputs
-│   │   │   └── outputs.tf # Networking outputs
-│   ├── outputs.tf
-│   └── variables.tf
-```
 
-## Key Features
-- **EKS Cluster Creation**: Managed control plane with configurable Kubernetes versions (1.23+)
-- **Worker Node Groups**: Auto-scaling groups with launch templates
-- **Secure Networking**: VPC with public subnets across 3 AZs
-- **Kubernetes Integration**: Helm-managed namespace/pod/service resources
-- **IAM Authentication**: Automated token generation for cluster access (via `kubectl`)
+```
+├── .github/workflows/    # GitHub Actions workflow definitions
+├── app/                 # Demo application code and Dockerfile
+├── helm/               # Helm chart for deploying the demo service
+└── infra/              # Terraform configurations for AWS infrastructure
+```
 
 ## Prerequisites
 
-### OIDC Account for GitHub Actions
+### AWS Access Keys Setup
 
-To deploy this cluster via GitHub Actions without using AWS access keys, you need to set up an OIDC account with the necessary permissions. Follow these steps:
+1. Create an IAM user with appropriate permissions:
+   - EKS cluster management
+   - ECR repository access
+   - VPC and networking management
+   - S3 access for Terraform state
 
-1. **Create an IAM Role for GitHub Actions OIDC**:
-   - Go to the IAM console in AWS.
-   - Create a new role with the following trust policy:
-     ```json
-     {
-       "Version": "2012-10-17",
-       "Statement": [
-         {
-           "Effect": "Allow",
-           "Principal": {
-             "Federated": "arn:aws:iam::YOUR_AWS_ACCOUNT_ID:oidc-provider/token.actions.githubusercontent.com"
-           },
-           "Action": "sts:AssumeRoleWithWebIdentity",
-           "Condition": {
-             "StringEquals": {
-               "token.actions.githubusercontent.com:sub": "repo:YOUR_GITHUB_USERNAME/YOUR_REPOSITORY_NAME:*"
-             }
-           }
-         }
-       ]
-     }
-     ```
-   - Attach the necessary policies to this role to allow it to create and manage EKS clusters and other AWS resources.
+2. Generate access keys for the IAM user
 
-2. **Set the Role ARN in GitHub Secrets**:
-   - Go to your GitHub repository settings.
-   - Under "Secrets and variables" -> "Actions", create a new secret named `OIDC_ROLE_ARN` and set its value to the ARN of the IAM role you created.
-   - You do not need to set AWS access keys (AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY) as the OIDC role will handle authentication.
+3. Add the following secrets to your GitHub repository:
+   - `AWS_ACCESS_KEY_ID`: Your AWS access key
+   - `AWS_SECRET_ACCESS_KEY`: Your AWS secret key
+   - `AWS_ACCOUNT_ID`: Your AWS account ID
+   - `ECR_REPOSITORY`: Name of your ECR repository
+   - `TF_STATE_BUCKET`: Name of your S3 bucket for Terraform state
+   - `ADMIN_USER_ARN`: ARN of the IAM user for cluster access
+   - `ADMIN_K8S_USERNAME`: Kubernetes username for the admin user
 
-## Quick Start
+## GitHub Actions Workflows
 
-1. Clone the repository:
-   ```shell
-   git clone https://github.com/robcarmo/simple-eks.git
-   cd simple-eks/infra
+### Infrastructure Deployment
+- **Workflow**: `.github/workflows/infra-deploy.yaml`
+- **Trigger**: Push to `master` branch in `infra/` directory
+- **Actions**: 
+  - Initialize Terraform
+  - Plan infrastructure changes
+  - Apply infrastructure changes
+
+### Application Deployment
+- **Workflow**: `.github/workflows/app-build.yaml`
+- **Trigger**: Push to `master` branch in `app/` directory
+- **Actions**:
+  - Build Docker image
+  - Push to ECR
+  - Deploy to EKS using Helm
+
+### Cluster Testing
+- **Workflow**: `.github/workflows/cluster-test.yaml`
+- **Trigger**: Manual workflow dispatch
+- **Actions**:
+  - Verify EKS cluster health
+  - Test service deployment
+  - Validate endpoint access
+
+## Port Configuration
+
+The demo service runs on port 8080. This is configured in:
+- `app/app.js`: Express server port
+- `helm/demo-service/values.yaml`: Service port mapping
+- `helm/demo-service/templates/deployment.yaml`: Container port
+
+## Testing
+
+1. Deploy infrastructure:
+   ```bash
+   git push origin master  # Updates to infra/ directory
    ```
 
-2. Initialize Terraform:
-   ```shell
-   terraform init
+2. Build and deploy application:
+   ```bash
+   git push origin master  # Updates to app/ directory
    ```
 
-3. Review the plan:
-   ```shell
-   terraform plan
-   ```
-
-4. Apply the configuration:
-   ```shell
-   terraform apply
-   ```
-
-5. Deploy the Helm chart:
-   ```shell
-   cd ../helm/demo-service
-   helm install demo-service .
-   ```
-
-## Helm Chart Usage
-
-The Helm chart located in `helm/demo-service` can be used to deploy the demo service to your EKS cluster. 
-
-### Installation
-
-To install the Helm chart, ensure you have Helm installed and configured to communicate with your EKS cluster. Then run:
-
-```shell
-helm install demo-service ./demo-service
-```
-
-### Configuration
-
-You can customize the deployment by modifying the `values.yaml` file in the Helm chart directory. This file contains default values for the deployment, including the namespace, image, and service configurations.
-
-## Modules
-
-### VPC Module
-
-The VPC module (`modules/vpc`) handles the creation of a Virtual Private Cloud (VPC), subnets, and routing. Ensure that you do not create the VPC more than once to avoid duplication.
-
-### EKS Module
-
-The EKS module (`modules/eks`) is responsible for setting up the EKS cluster, including security groups, IAM roles, and node groups.
-
-### ECR Module
-
-The ECR module (`modules/ecr`) sets up an Elastic Container Registry (ECR) repository for storing Docker images used by the demo service.
-
-## Variables and Outputs
-
-### Variables
-
-The `variables.tf` file defines various input variables used to customize the Terraform configuration, such as cluster name, Kubernetes version, VPC CIDR block, and node instance types.
-
-### Outputs
-
-The `outputs.tf` file provides the outputs of the Terraform configuration, including the EKS cluster ID, endpoint, and ECR repository URL and ARN.
-
-## Best Practices
-
-- Use separate Terraform workspaces for environments.
-- Enable AWS provider version pinning (>= 5.0).
-- Regularly rotate IAM credentials.
-- Use t3 instance types for cost-effective worker nodes.
-- Maintain Kubernetes version parity between control plane and worker nodes.
+3. Run cluster tests:
+   - Go to GitHub Actions tab
+   - Select "Manual EKS Cluster Verification"
+   - Click "Run workflow"
+   - Monitor test results
 
 ## References
 
-- [Terraform Documentation](https://www.terraform.io/docs)
-- [AWS EKS Documentation](https://docs.aws.amazon.com/eks/latest/userguide/what-is-eks.html)
+- [AWS CLI Configuration](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
+- [GitHub Actions Documentation](https://docs.github.com/en/actions)
+- [Terraform AWS Provider](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
 
 ## Last Updated
 
-Last updated: April 2025 (Terraform 1.5+, AWS Provider 5.0+, Helm 3.0+)
+Last updated: April 2025 (AWS Provider 5.0+, GitHub Actions v4)
