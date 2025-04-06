@@ -16,9 +16,3 @@ service:
   type: LoadBalancer
   port: 8080
   targetPort: 8080
-
-image:
-  repository: "nginx"  # Default value, can be overridden by Helm --set or values file
-  tag: "latest"        # Default value, can be overridden by Helm --set or values file
-
-containerPort: 8080  # Update this to match the application port
