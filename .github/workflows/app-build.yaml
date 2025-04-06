@@ -41,7 +41,7 @@ jobs:
           echo "Image Tag: $IMAGE_TAG"
 
           echo "Building image..."
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest ./app
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
           echo "Pushing image with tag: $IMAGE_TAG"
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
