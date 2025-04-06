@@ -1,6 +1,6 @@
 # .github/workflows/deploy-infra.yml
 
-name: AWS Infrastructure Management (Using Access Keys)
+name: Deploy Infra
 
 on:
   push:

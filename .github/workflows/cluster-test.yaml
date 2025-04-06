@@ -1,13 +1,12 @@
-name: Manual EKS Cluster Verification
+name: Manual EKS Cluster Verification (Using Access Keys)
 
 on:
-  # Allows manually triggering this workflow.
   workflow_dispatch:
     inputs:
       cluster_name:
         description: 'EKS Cluster Name'
         required: true
-        default: 'my-eks-cluster'
+        default: 'cc-eks'
         type: string
       location:
         description: 'AWS Region'
@@ -22,11 +21,14 @@ on:
 
 permissions:
   contents: read
-  id-token: write  # Required for OIDC-based authentication.
 
 jobs:
   cluster-verification:
     runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: ${{ github.event.inputs.location || 'us-east-1' }}
 
     steps:
       - name: Validate Inputs
@@ -35,107 +37,109 @@ jobs:
           echo "Region: ${{ github.event.inputs.location }}"
           echo "Timeout: ${{ github.event.inputs.timeout }} seconds"
 
-      # Authenticate to AWS using OIDC
-      - name: Configure AWS Credentials (OIDC)
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          role-to-assume: ${{ secrets.githubaws }}
-          aws-region: ${{ github.event.inputs.location }}
-
-      # Update kubeconfig to point to EKS
       - name: Configure EKS Access
         run: |
+          echo "Configuring kubectl for cluster: ${{ github.event.inputs.cluster_name }}"
           aws eks update-kubeconfig \
             --name ${{ github.event.inputs.cluster_name }} \
             --region ${{ github.event.inputs.location }}
 
-      # --- Deployment Verification ---
       - name: Verify Deployment 'demo-service'
         run: |
-          echo "Verifying deployment 'demo-service' has 1 available replica in any namespace..."
-          sleep 5  # Short wait for context to be ready
-          AVAILABLE_REPLICAS=$(kubectl get deployment demo-service --all-namespaces -o jsonpath='{.items[0].status.availableReplicas}' 2>/dev/null || echo "0")
+          DEPLOYMENT_NAME="demo-service"
+          TARGET_NAMESPACE="demo-service"
 
-          if [[ "$AVAILABLE_REPLICAS" -eq 1 ]]; then
-            echo "Deployment verification successful."
+          echo "Verifying deployment '$DEPLOYMENT_NAME' has at least 1 available replica in namespace '$TARGET_NAMESPACE'..."
+          sleep 5
+
+          AVAILABLE_REPLICAS=$(kubectl get deployment $DEPLOYMENT_NAME -n $TARGET_NAMESPACE -o jsonpath='{.status.availableReplicas}' 2>/dev/null || echo "0")
+
+          if [[ "$AVAILABLE_REPLICAS" =~ ^[0-9]+$ && "$AVAILABLE_REPLICAS" -ge 1 ]]; then
+            echo "Deployment verification successful ($AVAILABLE_REPLICAS available replicas found)."
           else
-            echo "Error: Expected 1 available replica for deployment 'demo-service', found $AVAILABLE_REPLICAS"
-            echo "--- Deployment Status ---"
-            kubectl get all -A
-            kubectl get deployment demo-service --all-namespaces -o wide || true
-            echo "--- Deployment YAML ---"
-            kubectl get deployment demo-service --all-namespaces -o yaml || true
-            echo "--- Pods Status ---"
-            kubectl get pods --all-namespaces -l app=demo-service || true
+            echo "Error: Expected at least 1 available replica for deployment '$DEPLOYMENT_NAME' in namespace '$TARGET_NAMESPACE', found '$AVAILABLE_REPLICAS'"
+            echo "--- Deployment Status (${TARGET_NAMESPACE} namespace) ---"
+            kubectl get deployment $DEPLOYMENT_NAME -n $TARGET_NAMESPACE -o wide || echo "Deployment $DEPLOYMENT_NAME not found in namespace $TARGET_NAMESPACE."
+            echo "--- Deployment YAML (${TARGET_NAMESPACE} namespace) ---"
+            kubectl get deployment $DEPLOYMENT_NAME -n $TARGET_NAMESPACE -o yaml || true
+            echo "--- Pods Status (app=${DEPLOYMENT_NAME} label in ${TARGET_NAMESPACE} namespace) ---"
+            kubectl get pods -n $TARGET_NAMESPACE -l app=$DEPLOYMENT_NAME || echo "No pods found with label app=$DEPLOYMENT_NAME in namespace $TARGET_NAMESPACE."
+            echo "--- All Resources in ${TARGET_NAMESPACE} namespace ---"
+            kubectl get all -n $TARGET_NAMESPACE || true
             exit 1
           fi
 
-      # --- End-to-End Test ---
-      - name: End-to-End Test Service 'demo-service'
+      - name: End-to-End Test Service 'demo-service-svc'
         run: |
+          SERVICE_NAME="demo-service-svc"
+          TARGET_NAMESPACE="demo-service"
           TIMEOUT_SECONDS="${{ github.event.inputs.timeout }}"
-          WAIT_INTERVAL=10
+          WAIT_INTERVAL=15
 
-          # Basic validation for positive integer
           if ! [[ "$TIMEOUT_SECONDS" =~ ^[1-9][0-9]*$ ]]; then
             echo "Error: Invalid timeout value '$TIMEOUT_SECONDS'. Must be a positive integer."
             exit 1
           fi
 
           MAX_WAIT_ITERATIONS=$(( TIMEOUT_SECONDS / WAIT_INTERVAL ))
-          echo "Attempting to get External IP for service 'demo-service' (max wait: ${TIMEOUT_SECONDS}s)..."
+          echo "Attempting to get External IP/Hostname for service '$SERVICE_NAME' in namespace '$TARGET_NAMESPACE' (max wait: ${TIMEOUT_SECONDS}s)..."
 
-          EXTERNAL_IP=""
+          ENDPOINT_ADDRESS=""
           for (( i=1; i<=MAX_WAIT_ITERATIONS; i++ )); do
-            # Attempt retrieving an external IP field from the service
-            IP_JSON=$(kubectl get service demo-service -o jsonpath='{.status.loadBalancer.ingress[0].ip}' 2>/dev/null || true)
-            if [[ -n "$IP_JSON" && "$IP_JSON" != "null" && "$IP_JSON" != "<none>" ]]; then
-              EXTERNAL_IP="$IP_JSON"
-              echo "Found External IP: $EXTERNAL_IP"
+            HOSTNAME=$(kubectl get service $SERVICE_NAME -n $TARGET_NAMESPACE -o jsonpath='{.status.loadBalancer.ingress[0].hostname}' 2>/dev/null || true)
+            IP_ADDR=$(kubectl get service $SERVICE_NAME -n $TARGET_NAMESPACE -o jsonpath='{.status.loadBalancer.ingress[0].ip}' 2>/dev/null || true)
+
+            if [[ -n "$HOSTNAME" && "$HOSTNAME" != "null" && "$HOSTNAME" != "<none>" ]]; then
+              ENDPOINT_ADDRESS="$HOSTNAME"
+              echo "Found External Hostname: $ENDPOINT_ADDRESS"
+              break
+            elif [[ -n "$IP_ADDR" && "$IP_ADDR" != "null" && "$IP_ADDR" != "<none>" ]]; then
+              ENDPOINT_ADDRESS="$IP_ADDR"
+              echo "Found External IP: $ENDPOINT_ADDRESS"
               break
             fi
 
             if [[ $i -eq $MAX_WAIT_ITERATIONS ]]; then
-               echo "Error: Timed out waiting for External IP for service 'demo-service' after ~${TIMEOUT_SECONDS} seconds."
-               echo "--- Service Status ---"
-               kubectl get service demo-service -o wide || true
-               echo "--- Service YAML ---"
-               kubectl get service demo-service -o yaml || true
+               echo "Error: Timed out waiting for External IP/Hostname for service '$SERVICE_NAME' in namespace '$TARGET_NAMESPACE' after ~${TIMEOUT_SECONDS} seconds."
+               echo "--- Service Status (${TARGET_NAMESPACE} namespace) ---"
+               kubectl get service $SERVICE_NAME -n $TARGET_NAMESPACE -o wide || echo "Service $SERVICE_NAME not found in namespace $TARGET_NAMESPACE."
+               echo "--- Service YAML (${TARGET_NAMESPACE} namespace) ---"
+               kubectl get service $SERVICE_NAME -n $TARGET_NAMESPACE -o yaml || true
                exit 1
             fi
 
-            echo "Still waiting for External IP ($(( i * WAIT_INTERVAL ))s / ${TIMEOUT_SECONDS}s)..."
+            echo "Still waiting for External Endpoint ($(( i * WAIT_INTERVAL ))s / ${TIMEOUT_SECONDS}s)..."
             sleep $WAIT_INTERVAL
           done
 
-          if [[ -z "$EXTERNAL_IP" ]]; then
-            echo "Error: External IP was not obtained after loop completion. Unexpected state."
+          if [[ -z "$ENDPOINT_ADDRESS" ]]; then
+            echo "Error: External Endpoint address was not obtained after loop completion. Unexpected state."
             exit 1
           fi
 
-          echo "Running curl test (timeout: ${TIMEOUT_SECONDS}s) against http://$EXTERNAL_IP"
-          export EXTERNAL_IP
-          export TIMEOUT_SECONDS
+          SERVICE_URL="http://${ENDPOINT_ADDRESS}:8080"
 
-          timeout "${TIMEOUT_SECONDS}s" bash -c ' \
-            curl -s "http://$EXTERNAL_IP" \
-              --retry 5 \
-              --retry-delay 10 \
-              --max-time "$TIMEOUT_SECONDS" \
-              --fail \
-              --show-error \
-            | grep --color=never "Hello World!" \
-          '
-          TIMEOUT_EXIT_CODE=$?
+          echo "Running curl test (timeout: ${TIMEOUT_SECONDS}s) against ${SERVICE_URL}"
+          CURL_SUCCESS=false
+          for (( j=1; j<=5; j++ )); do
+             if curl -sSfL --connect-timeout 10 --max-time 20 "${SERVICE_URL}" | grep --color=never "Hello World!"; then
+               CURL_SUCCESS=true
+               echo "Curl test successful on attempt $j."
+               break
+             fi
+             echo "Curl attempt $j failed or did not return expected content. Retrying in 10 seconds..."
+             sleep 10
+          done
 
-          if [[ $TIMEOUT_EXIT_CODE -eq 0 ]]; then
+          if [[ "$CURL_SUCCESS" == "true" ]]; then
             echo "End-to-End test successful!"
-          elif [[ $TIMEOUT_EXIT_CODE -eq 124 ]]; then
-            echo "Error: Test timed out after $TIMEOUT_SECONDS seconds."
-            exit 1
           else
-            echo "Error: Test command failed with exit code $TIMEOUT_EXIT_CODE."
-            echo "Attempting final diagnostic curl:"
-            curl -v "http://$EXTERNAL_IP" --connect-timeout 10 --max-time 30 || true
+            echo "Error: End-to-End test failed after multiple retries."
+            echo "--- Final Service Status (${TARGET_NAMESPACE} namespace) ---"
+            kubectl get service $SERVICE_NAME -n $TARGET_NAMESPACE -o wide || true
+            echo "--- Final Pods Status (app=${DEPLOYMENT_NAME} label in ${TARGET_NAMESPACE} namespace) ---"
+            kubectl get pods -n $TARGET_NAMESPACE -l app=demo-service || true
+            echo "--- Attempting final diagnostic curl ---"
+            curl -v "${SERVICE_URL}" --connect-timeout 10 --max-time 30 || true
             exit 1
           fi
