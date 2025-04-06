@@ -221,101 +221,101 @@
     }
 
     # Add this resource to manage the aws-auth ConfigMap
-    // resource "kubernetes_config_map_v1" "aws_auth" {
-    //   metadata {
-    //     name      = "aws-auth"
-    //     namespace = "kube-system"
-    //     # labels = {
-    //     #   "managed-by" = "terraform"
-    //     # }
-    //   }
-    //
-    //   depends_on = [
-    //     aws_eks_cluster.demo,
-    //     aws_iam_role.node
-    //   ]
-    //
-    //   data = {
-    //     # --- Role Mappings ---
-    //     # Node role mapping - KEEP AS IS
-    //     mapRoles = yamlencode([
-    //       {
-    //         rolearn  = aws_iam_role.node.arn
-    //         username = "system:node:{{EC2PrivateDNSName}}"
-    //         groups = [
-    //           "system:bootstrappers",
-    //           "system:nodes"
-    //         ]
-    //       },
-    //       # Add other role mappings if needed
-    //     ]), // Closing parenthesis for mapRoles
-    //
-    //     # --- User Mappings ---
-    //     # ONLY Map the single user (which serves as both admin and pipeline identity)
-    //     mapUsers = yamlencode(
-    //       # Condition: Only proceed if BOTH the ARN string AND the username string are not empty
-    //       (var.admin_user_arns != "" && var.admin_k8s_username != "") ?
-    //       # If TRUE: Create a list containing the single user map object
-    //       [
-    //         {
-    //           userarn  = var.admin_user_arns      # The ARN of the user (e.g., robaws)
-    //           username = var.admin_k8s_username   # The k8s username (e.g., robaws)
-    //           groups   = [ "system:masters" ]     # Grant admin privileges
-    //         }
-    //       ] :
-    //       # If FALSE (either variable is empty): Create an empty list
-    //       []
-    //     ) // Closing parenthesis for mapUsers
-    //
-    //   } // Closing brace for the data block
-    // }
+    resource "kubernetes_config_map_v1" "aws_auth" {
+      metadata {
+        name      = "aws-auth"
+        namespace = "kube-system"
+        # labels = {
+        #   "managed-by" = "terraform"
+        # }
+      }
+
+      depends_on = [
+        aws_eks_cluster.demo,
+        aws_iam_role.node
+      ]
+
+      data = {
+        # --- Role Mappings ---
+        # Node role mapping - KEEP AS IS
+        mapRoles = yamlencode([
+          {
+            rolearn  = aws_iam_role.node.arn
+            username = "system:node:{{EC2PrivateDNSName}}"
+            groups = [
+              "system:bootstrappers",
+              "system:nodes"
+            ]
+          },
+          # Add other role mappings if needed
+        ]), // Closing parenthesis for mapRoles
+
+        # --- User Mappings ---
+        # ONLY Map the single user (which serves as both admin and pipeline identity)
+        mapUsers = yamlencode(
+          # Condition: Only proceed if BOTH the ARN string AND the username string are not empty
+          (var.admin_user_arns != "" && var.admin_k8s_username != "") ?
+          # If TRUE: Create a list containing the single user map object
+          [
+            {
+              userarn  = var.admin_user_arns      # The ARN of the user (e.g., robaws)
+              username = var.admin_k8s_username   # The k8s username (e.g., robaws)
+              groups   = [ "system:masters" ]     # Grant admin privileges
+            }
+          ] :
+          # If FALSE (either variable is empty): Create an empty list
+          []
+        ) // Closing parenthesis for mapUsers
+
+      } // Closing brace for the data block
+    }
 
 
-resource "kubernetes_config_map_v1" "aws_auth" {
-  metadata {
-    name      = "aws-auth"
-    namespace = "kube-system"
-    # labels = {
-    #   "managed-by" = "terraform-test" # Indicate it's a test config
-    # }
-  }
+// resource "kubernetes_config_map_v1" "aws_auth" {
+//   metadata {
+//     name      = "aws-auth"
+//     namespace = "kube-system"
+//     # labels = {
+//     #   "managed-by" = "terraform-test" # Indicate it's a test config
+//     # }
+//   }
 
-  depends_on = [
-    aws_eks_cluster.demo,
-    aws_iam_role.node
-  ]
+//   depends_on = [
+//     aws_eks_cluster.demo,
+//     aws_iam_role.node
+//   ]
 
-  # Use Terraform's ability to manage raw data for the ConfigMap
-  # Instead of yamlencode, we construct the YAML string directly.
-  data = {
-    # Use heredoc syntax (<<YAML ... YAML) for multiline YAML string
-    "mapRoles" = <<-YAML
-      - rolearn: ${aws_iam_role.node.arn} # Dynamically get node role ARN
-        username: system:node:{{EC2PrivateDNSName}}
-        groups:
-          - system:bootstrappers
-          - system:nodes
-      # Add other HARDCODED role mappings here if needed for testing
-      # - rolearn: arn:aws:iam::123456789012:role/some-other-role
-      #   username: some-other-role-user
-      #   groups:
-      #     - some-group
-    YAML
+//   # Use Terraform's ability to manage raw data for the ConfigMap
+//   # Instead of yamlencode, we construct the YAML string directly.
+//   data = {
+//     # Use heredoc syntax (<<YAML ... YAML) for multiline YAML string
+//     "mapRoles" = <<-YAML
+//       - rolearn: ${aws_iam_role.node.arn} # Dynamically get node role ARN
+//         username: system:node:{{EC2PrivateDNSName}}
+//         groups:
+//           - system:bootstrappers
+//           - system:nodes
+//       # Add other HARDCODED role mappings here if needed for testing
+//       # - rolearn: arn:aws:iam::123456789012:role/some-other-role
+//       #   username: some-other-role-user
+//       #   groups:
+//       #     - some-group
+//     YAML
 
-    "mapUsers" = <<-YAML
-      # Hardcode the admin/pipeline user mapping
-      - userarn: arn:aws:iam::149399235178:user/robaws # <<< HARDCODED Admin/Pipeline User ARN
-        username: robaws                             # <<< HARDCODED Kubernetes Username
-        groups:
-          - system:masters
-      # Add other HARDCODED user mappings here if needed for testing
-      # - userarn: arn:aws:iam::123456789012:user/another-user
-      #   username: another-user
-      #   groups:
-      #     - system:masters
-    YAML
-  }
-}
+//     "mapUsers" = <<-YAML
+//       # Hardcode the admin/pipeline user mapping
+//       - userarn: arn:aws:iam::149399235178:user/robaws # <<< HARDCODED Admin/Pipeline User ARN
+//         username: robaws                             # <<< HARDCODED Kubernetes Username
+//         groups:
+//           - system:masters
+//       # Add other HARDCODED user mappings here if needed for testing
+//       # - userarn: arn:aws:iam::123456789012:user/another-user
+//       #   username: another-user
+//       #   groups:
+//       #     - system:masters
+//     YAML
+//   }
+// }
     resource "aws_iam_instance_profile" "node" {
       name = "${var.cluster-name}-node-profile"
       role = aws_iam_role.node.name
