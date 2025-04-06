@@ -20,3 +20,5 @@ service:
 image:
   repository: "nginx"  # Default value, can be overridden by Helm --set or values file
   tag: "latest"        # Default value, can be overridden by Helm --set or values file
+
+containerPort: 8080  # Update this to match the application port
