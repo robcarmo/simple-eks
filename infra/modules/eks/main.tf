@@ -185,7 +185,7 @@
 
       depends_on = [
         aws_iam_role.node,
-        aws_eks_cluster.demo
+        aws_eks_cluster.demo,
         kubernetes_config_map_v1.aws_auth
       ]
 
