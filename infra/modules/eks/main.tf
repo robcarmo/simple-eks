@@ -316,7 +316,7 @@
 //     YAML
 //   }
 // }
-    resource "aws_iam_instance_profile" "node" {
-      name = "${var.cluster-name}-node-profile"
-      role = aws_iam_role.node.name
-    }
+    // resource "aws_iam_instance_profile" "node" {
+    //   name = "${var.cluster-name}-node-profile"
+    //   role = aws_iam_role.node.name
+    // }
