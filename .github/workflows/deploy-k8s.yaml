@@ -1,50 +1,97 @@
-steps:
-  # Step 1: Check out code
-  - name: Checkout code
-    uses: actions/checkout@v4
+# .github/workflows/deploy-helm.yml
 
-  # Step 2: Set up Helm
-  - name: Set up Helm
-    uses: azure/setup-helm@v4
+name: Deploy Helm Chart to EKS (Using Access Keys - us-east-1)
 
-  # Step 3: Update kubeconfig for EKS (Hardcoded Region)
-  - name: Update kubeconfig for EKS
-    run: |
-      echo "Configuring kubectl for cluster: cc-eks in us-east-1"
-      aws eks update-kubeconfig --name cc-eks --region us-east-1 # HARDCODED REGION
+on:
+  # Trigger independently on pushes affecting app code or Helm chart
+  push:
+    branches:
+      - master # Or your primary branch name
+    paths:
+      - 'app/**'
+      - 'helm/**'
 
-  # Step 4: Ensure Namespace Exists using kubectl apply
-  - name: Ensure Namespace Exists
-    run: |
-      echo "Ensuring namespace '${{ env.TARGET_NAMESPACE }}' exists..."
-      cat <<EOF | kubectl apply -f -
-      apiVersion: v1
-      kind: Namespace
-      metadata:
-        name: ${{ env.TARGET_NAMESPACE }}
-      EOF
-      echo "Namespace existence check complete."
+  # Allows manual triggering from the GitHub Actions UI
+  workflow_dispatch:
 
-  # Step 5: Deploy Helm Chart (Hardcoded Region in Image Path)
-  - name: Deploy Helm Chart
+# Set permissions for the workflow. Only need 'contents: read' for checkout.
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    # Specify the runner environment
+    runs-on: ubuntu-latest
+
+    # Define environment variables available to all steps in this job
     env:
-      # Secrets needed for image path construction
-      AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-      ECR_REPOSITORY_NAME: ${{ secrets.ECR_REPOSITORY }}
-    run: |
-      # Construct the full ECR image path using hardcoded region
-      # Format: <ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/<REPO_NAME>
-      FULL_ECR_IMAGE_PATH="${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/${ECR_REPOSITORY_NAME}" # HARDCODED REGION
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      # AWS_REGION is hardcoded in steps below, but can be set here as default if preferred
+      # AWS_REGION: us-east-1
+      TARGET_NAMESPACE: demo-service # Define the target Kubernetes namespace
 
-      echo "Deploying Helm chart 'demo-service' from './helm/demo-service'"
-      echo "Target namespace: ${{ env.TARGET_NAMESPACE }}"
-      echo "Setting image repository to: ${FULL_ECR_IMAGE_PATH}"
-      echo "Setting image tag to: latest"
+    steps:
+      # Step 1: Check out the repository code
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      # Use backslashes for line continuation
-      helm upgrade --install demo-service helm/demo-service \
-        --namespace ${{ env.TARGET_NAMESPACE }} \
-        --set deployment.image.repository="${FULL_ECR_IMAGE_PATH}" \
-        --set deployment.image.tag="latest"
+      # Step 2: Set up Helm client
+      # Ensures Helm v3+ is available on the runner
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+        with:
+          # Optionally specify a Helm version like 'v3.10.0'
+          # version: 'v3.x.x' # Defaults to latest stable if not specified
 
-      echo "Helm deployment command executed."
+      # Step 3: Update kubeconfig for EKS
+      # Configures kubectl to connect to the specified EKS cluster using the job's AWS credentials
+      - name: Update kubeconfig for EKS
+        run: |
+          echo "Configuring kubectl for cluster: cc-eks in us-east-1"
+          # Uses AWS credentials from job env vars and hardcoded region
+          aws eks update-kubeconfig --name cc-eks --region us-east-1
+
+      # Step 4: Ensure Namespace Exists using kubectl apply
+      # Creates the namespace idempotently before Helm tries to use it
+      - name: Ensure Namespace Exists
+        run: |
+          echo "Ensuring namespace '${{ env.TARGET_NAMESPACE }}' exists..."
+          # Use heredoc to pass Namespace manifest to kubectl apply stdin
+          cat <<EOF | kubectl apply -f -
+          apiVersion: v1
+          kind: Namespace
+          metadata:
+            name: ${{ env.TARGET_NAMESPACE }}
+            # Optionally add labels to the namespace
+            # labels:
+            #   managed-by: github-actions
+          EOF
+          echo "Namespace check/creation complete."
+
+      # Step 5: Deploy Helm Chart
+      - name: Deploy Helm Chart
+        env:
+          # Make secrets needed for image path available to this step's script
+          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+          ECR_REPOSITORY_NAME: ${{ secrets.ECR_REPOSITORY }}
+        run: |
+          # Construct the full ECR image path using the account ID, hardcoded region, and repo name
+          # Format: <ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/<REPO_NAME>
+          FULL_ECR_IMAGE_PATH="${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/${ECR_REPOSITORY_NAME}"
+
+          echo "Deploying Helm chart 'demo-service' from Helm chart directory './helm/demo-service'"
+          echo "Target namespace: ${{ env.TARGET_NAMESPACE }}"
+          echo "Setting image repository to: ${FULL_ECR_IMAGE_PATH}"
+          echo "Setting image tag to: latest"
+
+          # Run helm upgrade --install. This installs if release doesn't exist, upgrades if it does.
+          # Use backslashes (\) for line continuation.
+          # Removed --create-namespace flag as the previous step handles it.
+          helm upgrade --install demo-service helm/demo-service \
+            --namespace ${{ env.TARGET_NAMESPACE }} \
+            --set deployment.image.repository="${FULL_ECR_IMAGE_PATH}" \
+            --set deployment.image.tag="latest"
+          # No backslash on the last line of the command
+
+          echo "Helm deployment command executed successfully."
