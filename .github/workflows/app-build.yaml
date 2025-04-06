@@ -1,40 +1,75 @@
-name: Build and Push App Container to ECR with OIDC
+# .github/workflows/build-push-ecr.yml
+
+name: Build and Push App Container to ECR (Using Access Keys)
 
 on:
+  # Trigger the workflow on push events to the master branch
   push:
     branches:
-      - master
+      - master # Or your primary branch name (e.g., main)
+    # Only trigger if files in the 'app/' directory or the Dockerfile change
     paths:
       - 'app/**'
       - 'app/Dockerfile'
 
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Set permissions for the workflow. Only need 'contents: read' for checkout.
 permissions:
-  id-token: write
   contents: read
 
 jobs:
   build-and-push:
+    # Specify the runner environment
     runs-on: ubuntu-latest
+
+    # Define environment variables available to all steps in this job
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: us-east-1 # Specify the AWS region of your ECR repository
+
     steps:
+      # Step 1: Check out the repository code
+      # Allows the workflow to access your code, including the 'app/' directory and Dockerfile
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Configure AWS credentials using OIDC
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          role-to-assume: ${{ secrets.githubaws }}
-          aws-region: us-east-1  # AWS region as specified
-
+      # Step 2: Login to Amazon ECR
+      # Uses the job's environment variables (AWS_ACCESS_KEY_ID, etc.) for authentication
+      # Provides the registry URI as an output for later steps
       - name: Login to Amazon ECR
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+        uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Build, tag, and push Docker image to Amazon ECR
+      # Step 3: Build, tag, and push Docker image to Amazon ECR
+      - name: Build, tag, and push image to Amazon ECR
+        # Define environment variables specific to this step
         env:
+          # Get the full registry URI (e.g., 123456789012.dkr.ecr.us-east-1.amazonaws.com)
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          # Get the repository name from secrets
           ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+          # Use the commit SHA as a unique image tag
           IMAGE_TAG: ${{ github.sha }}
+        # Run the Docker commands
         run: |
-          docker build -t $ECR_REPOSITORY:$IMAGE_TAG ./app
-          docker push $ECR_REPOSITORY:$IMAGE_TAG
-          docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REPOSITORY:latest
-          docker push $ECR_REPOSITORY:latest
+          echo "ECR Registry: $ECR_REGISTRY"
+          echo "ECR Repository: $ECR_REPOSITORY"
+          echo "Image Tag: $IMAGE_TAG"
+
+          echo "Building image..."
+          # Build the Docker image from the 'app' directory
+          # Tag it with both the commit SHA and 'latest'
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest ./app
+
+          echo "Pushing image with tag: $IMAGE_TAG"
+          # Push the image tagged with the commit SHA
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+          echo "Pushing image with tag: latest"
+          # Push the image tagged with 'latest'
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+          echo "Image push complete."
