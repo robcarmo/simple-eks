@@ -53,23 +53,25 @@ jobs:
           EOF
           echo "Namespace existence check complete."
 
-      # Step 5: Deploy Helm Chart (Removed --create-namespace)
+# Step 5: Deploy Helm Chart
       - name: Deploy Helm Chart
         env:
+          # Ensure this line correctly references your AWS Account ID secret
           AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
           ECR_REPOSITORY_NAME: ${{ secrets.ECR_REPOSITORY }}
+          # TARGET_NAMESPACE: demo-service # If using env var for namespace
         run: |
-          # Construct the full ECR image path
-          FULL_ECR_IMAGE_PATH="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY_NAME}"
+          # Construct the full ECR image path using the AWS_ACCOUNT_ID variable
+          FULL_ECR_IMAGE_PATH="${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/${ECR_REPOSITORY_NAME}"
 
           echo "Deploying Helm chart 'demo-service' from './helm/demo-service'"
-          echo "Target namespace: ${{ env.TARGET_NAMESPACE }}"
-          echo "Setting image repository to: ${FULL_ECR_IMAGE_PATH}"
+          echo "Target namespace: ${{ env.TARGET_NAMESPACE || 'demo-service' }}" # Use env var or default
+          echo "Setting image repository to: ${FULL_ECR_IMAGE_PATH}" # Verify this uses the correct var
           echo "Setting image tag to: latest"
 
-          # Run helm upgrade --install WITHOUT --create-namespace
           helm upgrade --install demo-service helm/demo-service \
-            --namespace ${{ env.TARGET_NAMESPACE }} \
+            --namespace ${{ env.TARGET_NAMESPACE || 'demo-service' }} \
+            # Ensure this --set uses the variable containing the Account ID
             --set deployment.image.repository="${FULL_ECR_IMAGE_PATH}" \
             --set deployment.image.tag="latest"
 
