@@ -1,76 +1,76 @@
-# .github/workflows/deploy-helm.yml (or your chosen filename)
+# .github/workflows/deploy-helm.yml
 
-name: Deploy Helm Chart to EKS
+name: Deploy Helm Chart to EKS (Using Access Keys)
 
 on:
-  # Trigger independently on pushes affecting app/ or helm/ directories
   push:
     branches:
-      - master # Or your primary branch name
+      - master
     paths:
       - 'app/**'
       - 'helm/**'
-
-  # Allows manual triggering
   workflow_dispatch:
 
-# Permissions: Only 'contents: read' is needed for checkout
 permissions:
   contents: read
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    # Define AWS credentials and region as environment variables for the job
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION: us-east-1 # Specify the AWS region of your EKS cluster & ECR repo
+      AWS_REGION: us-east-1
+      TARGET_NAMESPACE: demo-service # Define namespace as variable
 
     steps:
-      # Step 1: Check out the repository code
+      # Step 1: Check out code
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Step 2: REMOVED - Configure AWS credentials using OIDC is no longer needed
-
-      # Step 3: Install Helm (if not already on runner image)
-      # Often pre-installed on github runners, but good practice to ensure
+      # Step 2: Set up Helm
       - name: Set up Helm
-        uses: azure/setup-helm@v4 # Or another setup action if preferred
-        # with:
-        #   version: 'v3.x.x' # Specify version if needed
+        uses: azure/setup-helm@v4
 
-      # Step 4: Update kubeconfig for EKS
-      # Uses the job's environment variables for AWS authentication
+      # Step 3: Update kubeconfig for EKS
       - name: Update kubeconfig for EKS
         run: |
           echo "Configuring kubectl for cluster: cc-eks"
           aws eks update-kubeconfig --name cc-eks --region $AWS_REGION
 
-      # Step 5: Deploy Helm Chart
+      # --- NEW STEP ---
+      # Step 4: Ensure Namespace Exists using kubectl apply
+      - name: Ensure Namespace Exists
+        run: |
+          echo "Ensuring namespace '${{ env.TARGET_NAMESPACE }}' exists..."
+          # Use kubectl apply with a simple Namespace manifest via heredoc
+          # Apply is idempotent and won't fail if the namespace already exists
+          cat <<EOF | kubectl apply -f -
+          apiVersion: v1
+          kind: Namespace
+          metadata:
+            name: ${{ env.TARGET_NAMESPACE }}
+          EOF
+          echo "Namespace existence check complete."
+
+      # Step 5: Deploy Helm Chart (Removed --create-namespace)
       - name: Deploy Helm Chart
         env:
-          # Make secrets available to construct the image path
           AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
           ECR_REPOSITORY_NAME: ${{ secrets.ECR_REPOSITORY }}
         run: |
           # Construct the full ECR image path
-          # Format: <ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/<REPO_NAME>
           FULL_ECR_IMAGE_PATH="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY_NAME}"
 
           echo "Deploying Helm chart 'demo-service' from './helm/demo-service'"
-          echo "Target namespace: demo-service"
+          echo "Target namespace: ${{ env.TARGET_NAMESPACE }}"
           echo "Setting image repository to: ${FULL_ECR_IMAGE_PATH}"
           echo "Setting image tag to: latest"
 
-          # Run helm upgrade --install
-          # Creates the namespace if it doesn't exist
-          # Sets the image repository and tag dynamically
+          # Run helm upgrade --install WITHOUT --create-namespace
           helm upgrade --install demo-service helm/demo-service \
-            --namespace demo-service \
-            --create-namespace \
+            --namespace ${{ env.TARGET_NAMESPACE }} \
             --set deployment.image.repository="${FULL_ECR_IMAGE_PATH}" \
-            --set deployment.image.tag="latest" # Deploy the 'latest' tag built previously
+            --set deployment.image.tag="latest"
 
           echo "Helm deployment command executed."
