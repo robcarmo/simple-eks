@@ -131,9 +131,6 @@
           "kubernetes.io/cluster/${var.cluster-name}" = "owned"
         }
       }
-      tags = {
-        Name = "${var.cluster-name}-launch-template-node"
-      }
     }
 
     # Create a node IAM role for the worker nodes
@@ -189,6 +186,7 @@
       depends_on = [
         aws_iam_role.node,
         aws_eks_cluster.demo
+        kubernetes_config_map_v1.aws_auth
       ]
 
       # Tag so EKS can auto-discover these nodes as part of the cluster
